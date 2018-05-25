@@ -1,0 +1,50 @@
+[
+  {
+    "promo": {
+      "msg": "",
+      "img": "",
+      "img_description": "",
+    },
+    "offer": {
+      "img": "",
+      "name": "",
+      "price": "",
+      "details": "",
+      "redemption_period": "",
+      "qr_pass_code": "",
+      "redemption_center_details": [],
+    },
+    "backend": {
+      "no_of_quota": "",
+      "offer_price": "",
+      "offer_start_date": "",
+      "offer_end_date": "",
+    },
+  },
+  {
+    "promo": {
+      "msg": "Wechat Go 樂遊卡會員限時優惠",
+      "img": "huawei.png",
+      "img_description": "Wechat Go 樂遊卡會員可以至優惠價$4000購買Huawei P20 Pro一部 (原價$5999)。立即下載eCoupon。",
+    },
+    "offer": {
+      "img": "huawei.png",
+      "name": "優惠價$4000購買Huawei P20 Pro一部 (原價$5999)",
+      "price": "HK$4999",
+      "details": "樂遊卡會員可以至優惠價$4000購買Huawei P20 Pro一部 (原價$5999)。立即下載eCoupon。",
+      "redemption_period": "2018年4月1日至6月31日",
+      "qr_pass_code": "XXXXXX",
+      "redemption_center_details": [
+        "1O1O 尖沙咀門市\n九龍尖沙咀漢口道28號亞太中心10-11號地下及9-11號一樓\n營業時間:\n(星期一至六): 9:30 – 21:00\n(星期日及假期) 10:30 – 20:00",
+        "1O1O 中環門市\n香港中環威靈頓街52-54號地下\n營業時間:\n(星期一至六): 9:00 – 21:00\n(星期日及假期) 10:30 – 20:00",
+        "csl 銅鑼灣門市\n香港銅鑼灣怡和街22號1樓，2樓及地下1 & 2號舖\n營業時間: 10:30-22:00",
+        "io.t by HKT\n九龍尖沙咀柯士甸道西一號圓方二樓2001A 號舖\n營業時間:\n(星期一至四): 11:00 – 21:30\n(星期五、六、日及假期) 10:30 – 22:00"],
+    },
+    "backend": {
+      "no_of_quota": "200",
+      "offer_price": "200",
+      "offer_start_date": "1/Apr/18",
+      "offer_end_date": "30/Jun/18",
+    },
+  }
+]
