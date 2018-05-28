@@ -1,7 +1,9 @@
 <template lang="html">
-  <div class="youtube-player">
-    <div class="" id="youtube-player-thot">
-      <iframe  frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+  <div class="youtube-player mdc-elevation--z24">
+    <div class="uframe hidden">
+      <div class="" id="youtube-player-thot">
+        <iframe  frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+      </div>
     </div>
     <div id="youtube-player-slider" class="mdc-slider" tabindex="0" role="slider"
        aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
@@ -167,14 +169,14 @@ export default {
             if (playerCurrentTime !== this.currentVideoCurrentTime) {
               // this is to prevent updating the state with the same value (playerCurrentTime)
               this.updateCurrentVideoCurrentTime(playerCurrentTime)
-            }
 
-            const playerTimeDifference = (playerCurrentTime / playerTotalTime) * 100
-            console.log(playerCurrentTime)
-            // this.updateCurrentVideoCurrentTime(playerCurrentTime)
+              const playerTimeDifference = (playerCurrentTime / playerTotalTime) * 100
+              console.log(playerCurrentTime)
+              // this.updateCurrentVideoCurrentTime(playerCurrentTime)
 
-            if (this.userInputState) {
-              this.setProgressBar(playerTimeDifference)
+              if (this.userInputState) {
+                this.setProgressBar(playerTimeDifference)
+              }
             }
           }, 1000);
         }
@@ -256,17 +258,59 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.uframe {
+  position: relative;
+  height: 0;
+  width: 100%;
+  padding-bottom: 50%;
+  padding-top: 25px;
+  overflow: hidden;
+  // visibility: hidden
+  iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      max-width: 100%;
+      height: 100%;
+  }
+  &.hidden {
+    padding: 0;
+  }
+}
+
+
+
 .youtube-player {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
 
+  #youtube-player-thot {
+    visibility: hidden;
+    height: 0;
+  }
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 0;
+  }
+  &.hidden {
+    padding: 0;
+  }
+
   .youtube-player--control-panel {
     display: flex;
 
     .control-btns {
       margin-top: 8px;
+      margin-bottom: 8px;
+      margin-left: 8px;
     }
 
     .music-info {
