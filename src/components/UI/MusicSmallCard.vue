@@ -16,6 +16,7 @@
           <div class="demo-card__music-title mdc-typography--headline mdc-typography--headline5">{{title}}</div>
           <div class="demo-card__music-artist mdc-typography--body2">{{artist}}</div>
           <div class="demo-card__music-year mdc-typography--body2">({{timestamp}})</div>
+          <div class="demo-card__music-year mdc-typography--body2">Played {{plays}} times</div>
         </div>
       </div>
     </a>
@@ -23,6 +24,14 @@
     <div class="mdc-card__actions">
       <div class="mdc-card__action-buttons demo-card__action-buttons--text-only">Actions</div>
       <div class="mdc-card__action-icons">
+        <i class="material-icons demo-card__action-icon--star" tabindex="0" role="button" title="upvote">
+          arrow_upward
+        </i>
+        {{upvotes}}
+        <i class="material-icons demo-card__action-icon--star" tabindex="0" role="button" title="upvote">
+          arrow_downward
+        </i>
+
         <i class="material-icons demo-card__action-icon--star" tabindex="0" role="button" title="1 star">
           star_border
         </i>
@@ -47,7 +56,7 @@
 
 <script>
 export default {
-  props: [ "title", "artist", "timestamp", "url" ],
+  props: [ "title", "artist", "timestamp", "url", "upvotes", "plays", "youtubeId", "songId" ],
 
 }
 </script>

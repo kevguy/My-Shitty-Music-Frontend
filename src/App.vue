@@ -43,9 +43,18 @@
       // const result = await res.json()
       // this.$store.commit('SET_ENVIRONMENT', result.message)
     },
+    mounted () {
+      this.connectToWebSocket()
+    },
     methods: {
       closeDrawer() {
         this.$store.commit("toggleDrawer", false)
+      },
+      connectToWebSocket() {
+        const ws = new WebSocket("ws://localhost:3000/websocket")
+        ws.onopen = function () {
+          console.log('websocket connected')
+        }
       }
     }
   }

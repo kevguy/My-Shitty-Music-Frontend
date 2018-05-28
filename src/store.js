@@ -11,12 +11,16 @@ export default new Vuex.Store({
     UI, YouTubeMusicPlayer
   },
   state: {
-
+    songs: []
   },
   mutations: {
-
+    updateSongs (state, payload) { state.songs = payload }
   },
   actions: {
-
+    async FETCH_SONGS ({ commit }) {
+      const res = await fetch('http://localhost:3000/songs')
+      const result = await res.json()
+      commit('updateSongs', result)
+    }
   }
 })

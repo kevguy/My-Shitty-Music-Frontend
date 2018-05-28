@@ -11,6 +11,12 @@
             <router-link class="mdc-list-item" active-class="mdc-list-item--selected" tag="a" to="/" exact>
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings_input_component</i>Home
             </router-link>
+            <router-link class="mdc-list-item" active-class="mdc-list-item--selected" tag="a" to="/songs" exact>
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings_input_component</i>Songs
+            </router-link>
+            <router-link class="mdc-list-item" active-class="mdc-list-item--selected" tag="a" to="/add-song" exact>
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings_input_component</i>Add a Song
+            </router-link>
             <router-link class="mdc-list-item" active-class="mdc-list-item--selected" tag="a" to="/coupons" exact>
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings_input_component</i>Offers
             </router-link>

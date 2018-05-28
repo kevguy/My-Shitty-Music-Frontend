@@ -41,6 +41,7 @@ export default {
         CUED: 5,
       },
       player: undefined,
+      playerTimer: undefined,
       slider: undefined
     }
   },
@@ -66,6 +67,7 @@ export default {
   watch: {
     currentVideoId(val) {
       if (this.player) {
+        clearInterval(this.playerTimer)
         this.player.destroy()
           .then(() => {
             this.setupPlayer(val)
@@ -115,7 +117,7 @@ export default {
           const playerTotalTime = await this.player.getDuration()
           this.updateCurrentVideoDuration(playerTotalTime)
 
-          let mytimer = setInterval(async () => {
+          this.playerTimer = setInterval(async () => {
             const playerCurrentTime = await this.player.getCurrentTime()
             this.updateCurrentVideoCurrentTime(playerCurrentTime)
 

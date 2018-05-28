@@ -5,6 +5,7 @@ import About from './views/About.vue'
 
 
 import Songs from './views/Songs.vue'
+import AddSong from './views/AddSong.vue'
 
 Vue.use(Router)
 
@@ -27,6 +28,11 @@ export default new Router({
       path: '/songs',
       name: 'songs',
       component: Songs
+    },
+    {
+      path: '/add-song',
+      name: 'add song',
+      component: AddSong
     },
     { path: '/', redirect: '/songs' }
   ]
