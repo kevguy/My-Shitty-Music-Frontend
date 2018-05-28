@@ -110,7 +110,7 @@ export default {
     },
     async setupPlayer(videoId) {
       this.player = YouTubePlayer('youtube-player-thot');
-      this.player.loadVideoById('5a_u1et37W4');
+      this.player.loadVideoById(videoId);
       this.player.on('stateChange', async (event) => {
         const eventData = event.data
         if (eventData == this.ytPlayerStates.PLAYING) {
@@ -119,7 +119,10 @@ export default {
 
           this.playerTimer = setInterval(async () => {
             const playerCurrentTime = await this.player.getCurrentTime()
-            this.updateCurrentVideoCurrentTime(playerCurrentTime)
+            if (playerCurrentTime !== this.currentVideoCurrentTime) {
+              // this is to prevent updating the state with the same value (playerCurrentTime)
+              this.updateCurrentVideoCurrentTime(playerCurrentTime)
+            }
 
             const playerTimeDifference = (playerCurrentTime / playerTotalTime) * 100
             console.log(playerCurrentTime)

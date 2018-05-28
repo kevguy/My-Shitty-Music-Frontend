@@ -28,6 +28,7 @@
       <router-view class="view"></router-view>
     </transition>
     <YouTubeMusicPlayer />
+    <Snackbar />
   </div>
 </template>
 
@@ -35,9 +36,10 @@
   import Drawer from './components/UI/Drawer.vue'
   import Toolbar from './components/UI/Toolbar.vue'
   import YouTubeMusicPlayer from '@/components/YouTubeMusicPlayer.vue'
+  import Snackbar from '@/components/UI/Snackbar.vue'
 
   export default {
-    components: { Drawer, Toolbar, YouTubeMusicPlayer },
+    components: { Drawer, Toolbar, YouTubeMusicPlayer, Snackbar },
     async created() {
       // const res = await fetch(`/api/environment`)
       // const result = await res.json()
@@ -52,9 +54,25 @@
       },
       connectToWebSocket() {
         const ws = new WebSocket("ws://localhost:3000/websocket")
-        ws.onopen = function () {
+        ws.onopen = () => {
           console.log('websocket connected')
+          this.$store.commit('updateSnackBarMsg', 'websocket connected')
+          this.$store.commit('toggleSnackBar', true)
         }
+
+        ws.onmessage = (evt) => {
+          // const myTextArea = document.getElementById("textarea1");
+          // myTextArea.value = myTextArea.value + "\n" + evt.data;
+          //
+          // if (evt.data == "pong") {
+          //   setTimeout(function() { ws.send("ping"); }, 2000)
+          // }
+
+          this.$store.commit('updateSnackBarMsg', JSON.stringify(evt.data))
+          this.$store.commit('toggleSnackBar', true)
+        }
+
+
       }
     }
   }

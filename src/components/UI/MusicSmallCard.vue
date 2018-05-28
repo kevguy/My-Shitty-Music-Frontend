@@ -22,7 +22,7 @@
     </a>
     <hr class="mdc-list-divider">
     <div class="mdc-card__actions">
-      <div class="mdc-card__action-buttons demo-card__action-buttons--text-only">Actions</div>
+      <div class="mdc-card__action-buttons demo-card__action-buttons--text-only" v-on:click="playSong(youtubeId)">Actions</div>
       <div class="mdc-card__action-icons">
         <i class="material-icons demo-card__action-icon--star" tabindex="0" role="button" title="upvote">
           arrow_upward
@@ -57,7 +57,12 @@
 <script>
 export default {
   props: [ "title", "artist", "timestamp", "url", "upvotes", "plays", "youtubeId", "songId" ],
-
+  methods: {
+    playSong(youtubeId) {
+      // this.$store.commit('YouTubeMusicPlayer/updateCurrentVideoId', '5a_u1et37W4')
+      this.$store.commit('YouTubeMusicPlayer/updateCurrentVideoId', youtubeId)
+    }
+  }
 }
 </script>
 

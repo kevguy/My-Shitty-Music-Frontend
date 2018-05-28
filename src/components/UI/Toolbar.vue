@@ -3,7 +3,7 @@
     <div class="mdc-toolbar__row">
       <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
         <a href="#" class="material-icons mdc-toolbar__menu-icon" @click.stop="toggleDrawer(true)">menu</a>
-        <span class="mdc-toolbar__title">ClubSIM eCoupon ({{workingEnvironment}})</span>
+        <span class="mdc-toolbar__title">My Shitty Music ({{workingEnvironment}})</span>
       </section>
       <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
         <a href="#" class="material-icons mdc-toolbar__icon demo-toolbar__icon--custom" aria-label="Download" alt="Download">file_download</a>

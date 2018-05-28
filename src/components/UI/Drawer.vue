@@ -3,7 +3,7 @@
       <nav class="mdc-drawer__drawer">
         <header class="mdc-drawer__header">
           <div class="mdc-drawer__header-content mdc-theme--text-primary-on-primary mdc-theme--primary-bg">
-            Hangout Reader
+            My Shitty Music
           </div>
         </header>
         <div class="">

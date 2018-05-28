@@ -54,7 +54,6 @@ export default {
     this.$store.dispatch('FETCH_SONGS')
   },
   mounted() {
-    // this.$store.commit('YouTubeMusicPlayer/updateCurrentVideoId', '5a_u1et37W4')
   },
   methods: {
   }
