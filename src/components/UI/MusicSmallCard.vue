@@ -22,7 +22,7 @@
     </a>
     <hr class="mdc-list-divider">
     <div class="mdc-card__actions">
-      <div class="mdc-card__action-buttons demo-card__action-buttons--text-only" v-on:click="playSong(youtubeId)">Actions</div>
+      <div class="mdc-card__action-buttons demo-card__action-buttons--text-only" v-on:click="playSong(youtubeId, songId)">Actions</div>
       <div class="mdc-card__action-icons">
         <i class="material-icons demo-card__action-icon--star" tabindex="0" role="button" title="upvote">
           arrow_upward
@@ -58,13 +58,18 @@
 export default {
   props: [ "title", "artist", "timestamp", "url", "upvotes", "plays", "youtubeId", "songId" ],
   methods: {
-    playSong(youtubeId) {
+    playSong(youtubeId, songId) {
       // this.$store.commit('YouTubeMusicPlayer/updateCurrentVideoId', '5a_u1et37W4')
       this.$store.commit('YouTubeMusicPlayer/updateSongInfo', {
         name: this.title,
         artist: this.artist
       })
       this.$store.commit('YouTubeMusicPlayer/updateCurrentVideoId', youtubeId)
+      this.$store.commit('updateWebsocketMsg', JSON.stringify({
+        type: 'play',
+        content: songId
+      }))
+      this.$store.commit('toggleSendWebsocketMsg', true)
     }
   }
 }

@@ -40,10 +40,29 @@
 
   export default {
     components: { Drawer, Toolbar, YouTubeMusicPlayer, Snackbar },
+    data() {
+      return {
+        ws: undefined
+      }
+    },
     async created() {
       // const res = await fetch(`/api/environment`)
       // const result = await res.json()
       // this.$store.commit('SET_ENVIRONMENT', result.message)
+    },
+    computed: {
+      sendWebsocketMsg() { return this.$store.state.Websocket.sendWebsocketMsg }
+    },
+    watch: {
+      sendWebsocketMsg(val) {
+        if (val) {
+          console.log('hihi')
+          console.log(this.$store.state.Websocket.websocketMsg)
+          this.ws.send(this.$store.state.Websocket.websocketMsg)
+          this.$store.commit('updateWebsocketMsg', '')
+          this.$store.commit('toggleSendWebsocketMsg', false)
+        }
+      }
     },
     mounted () {
       this.connectToWebSocket()
@@ -53,26 +72,31 @@
         this.$store.commit("toggleDrawer", false)
       },
       connectToWebSocket() {
-        const ws = new WebSocket("ws://localhost:3000/websocket")
-        ws.onopen = () => {
+        this.ws = new WebSocket("ws://localhost:3000/websocket")
+        this.ws.onopen = () => {
           console.log('websocket connected')
           this.$store.commit('updateSnackBarMsg', 'websocket connected')
           this.$store.commit('toggleSnackBar', true)
+
+          this.ws.send(JSON.stringify({
+            type: 'text',
+            content: 'ping'
+          }))
         }
 
-        ws.onmessage = (evt) => {
+        this.ws.onmessage = (evt) => {
           // const myTextArea = document.getElementById("textarea1");
           // myTextArea.value = myTextArea.value + "\n" + evt.data;
           //
           // if (evt.data == "pong") {
           //   setTimeout(function() { ws.send("ping"); }, 2000)
           // }
-
-          this.$store.commit('updateSnackBarMsg', JSON.stringify(evt.data))
-          this.$store.commit('toggleSnackBar', true)
+          const data = JSON.parse(evt.data)
+          if (data.type === 'text') {
+            this.$store.commit('updateSnackBarMsg', JSON.stringify(data.content))
+            this.$store.commit('toggleSnackBar', true)
+          }
         }
-
-
       }
     }
   }
