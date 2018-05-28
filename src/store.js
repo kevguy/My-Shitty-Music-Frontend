@@ -22,6 +22,22 @@ export default new Vuex.Store({
       const res = await fetch('http://localhost:3000/songs')
       const result = await res.json()
       commit('updateSongs', result)
+    },
+    async FETCH_PLAYS ({ commit, state }) {
+      const res = await fetch('http://localhost:3000/songs/plays')
+      const result = await res.json()
+      const lookup = {}
+      for (let item of result) {
+        console.log(item)
+      }
+      result.forEach(item => {
+        lookup[item.SongID] = item.Plays
+      })
+      const songs = state.songs.map(song => ({
+        ...song,
+        plays: lookup[song.id]
+      }))
+      commit('updateSongs', songs)
     }
   }
 })

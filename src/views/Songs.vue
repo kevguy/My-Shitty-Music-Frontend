@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="">
+  <div class="songs-view">
     <MusicSmallCard
       v-for="song in songs"
       v-bind:song-id="song.id"
@@ -52,6 +52,7 @@ export default {
   },
   created() {
     this.$store.dispatch('FETCH_SONGS')
+      .then(() => this.$store.dispatch('FETCH_PLAYS'))
   },
   mounted() {
   },
@@ -61,6 +62,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.songs-view {
+  display: flex;
+  flex-flow: row wrap;
+}
 
 </style>

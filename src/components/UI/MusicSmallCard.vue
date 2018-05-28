@@ -82,7 +82,7 @@ export default {
 
 .demo-card {
     width: 350px;
-    margin: 48px;
+    margin: 8px;
 }
 
 .demo-card__music-row {
