@@ -60,6 +60,10 @@ export default {
   methods: {
     playSong(youtubeId) {
       // this.$store.commit('YouTubeMusicPlayer/updateCurrentVideoId', '5a_u1et37W4')
+      this.$store.commit('YouTubeMusicPlayer/updateSongInfo', {
+        name: this.title,
+        artist: this.artist
+      })
       this.$store.commit('YouTubeMusicPlayer/updateCurrentVideoId', youtubeId)
     }
   }

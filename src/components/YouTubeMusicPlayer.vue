@@ -16,6 +16,44 @@
         <div class="mdc-slider__focus-ring"></div>
       </div>
     </div>
+    <div class="youtube-player--control-panel">
+      <div class="control-btns">
+        <button class="mdc-fab material-icons mdc-fab--mini" aria-label="Skip Prev">
+          <span class="mdc-fab__icon">
+            skip_previous
+          </span>
+        </button>
+        <button
+          class="mdc-fab material-icons"
+          aria-label="Play"
+          v-on:click="resumeVideo()"
+          v-show="playerState !== 1">
+          <span class="mdc-fab__icon">
+            play_arrow
+          </span>
+        </button>
+        <button
+          class="mdc-fab material-icons"
+          aria-label="Pause"
+          v-on:click="pauseVideo()"
+          v-show="playerState === 1">
+          <span class="mdc-fab__icon">
+            pause
+          </span>
+        </button>
+        <button class="mdc-fab material-icons mdc-fab--mini" aria-label="Skip Next">
+          <span class="mdc-fab__icon">
+            skip_next
+          </span>
+        </button>
+      </div>
+      <div class="music-info">
+        <div class="demo-card__music-artist mdc-typography--headline5">{{songInfo.name}}</div>
+        <div class="demo-card__music-year mdc-typography--body2">{{songInfo.artist}}</div>
+        <div class="demo-card__music-year mdc-typography--body2">{{currentVideoCurrentTime || ''}}</div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -23,6 +61,9 @@
 import { mapState, mapMutations } from 'vuex'
 import YouTubePlayer from 'youtube-player'
 import { MDCSlider } from '@material/slider'
+import {MDCRipple} from '@material/ripple'
+
+
 
 export default {
   data() {
@@ -42,6 +83,7 @@ export default {
       },
       player: undefined,
       playerTimer: undefined,
+      playerState: -1,
       slider: undefined
     }
   },
@@ -58,11 +100,13 @@ export default {
       currentVideoId: state => state.currentVideoId,
       currentVideoDuration: state => state.currentVideoDuration,
       currentVideoCurrentTime: state => state.currentVideoCurrentTime,
-      userInputState: state => state.userInputState
+      userInputState: state => state.userInputState,
+      songInfo: state => state.songInfo
     })
   },
   mounted() {
     this.setupSlider()
+    // const fabRipple = new MDCRipple(document.querySelector('.mdc-fab'));
   },
   watch: {
     currentVideoId(val) {
@@ -113,6 +157,7 @@ export default {
       this.player.loadVideoById(videoId);
       this.player.on('stateChange', async (event) => {
         const eventData = event.data
+        this.playerState = eventData
         if (eventData == this.ytPlayerStates.PLAYING) {
           const playerTotalTime = await this.player.getDuration()
           this.updateCurrentVideoDuration(playerTotalTime)
@@ -141,7 +186,17 @@ export default {
       const max = 100;
       const progressBarWidth = percent * max / 100
       this.slider.value = progressBarWidth
-    }
+    },
+    resumeVideo() {
+      if (this.player) {
+        this.player.playVideo()
+      }
+    },
+    pauseVideo() {
+      if (this.player) {
+        this.player.pauseVideo()
+      }
+    },
     // player() {
     //   var player;
     //
@@ -206,6 +261,19 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+
+  .youtube-player--control-panel {
+    display: flex;
+
+    .control-btns {
+      margin-top: 8px;
+    }
+
+    .music-info {
+      margin-left: 8px;
+      margin-bottom: 8px;
+    }
+  }
 }
 
 // *

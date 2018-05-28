@@ -4,7 +4,8 @@ export default {
     currentVideoId: '',
     currentVideoDuration: 0,
     currentVideoCurrentTime: 0,
-    userInputState: true
+    userInputState: true,
+    songInfo: {}
   },
   mutations: {
     updateCurrentVideoId (state, payload) { state.currentVideoId = payload },
@@ -14,7 +15,8 @@ export default {
     updateCurrentVideoCurrentTime (state, payload) {
       state.currentVideoCurrentTime = payload
     },
-    updateUserInputState (state, payload) { state.userInputState = payload }
+    updateUserInputState (state, payload) { state.userInputState = payload },
+    updateSongInfo (state, payload) { state.songInfo = payload }
   },
   actions: {}
 }
