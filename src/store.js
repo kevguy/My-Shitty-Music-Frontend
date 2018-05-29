@@ -15,7 +15,19 @@ export default new Vuex.Store({
     songs: []
   },
   mutations: {
-    updateSongs (state, payload) { state.songs = payload }
+    updateSongs (state, payload) { state.songs = payload },
+    updatePlay (state, { id, plays }) {
+      const songs = state.songs.map((song) => {
+        if (song.id === id) {
+          return {
+            ...song,
+            plays
+          }
+        }
+        return song
+      })
+      state.songs = songs
+    }
   },
   actions: {
     async FETCH_SONGS ({ commit }) {

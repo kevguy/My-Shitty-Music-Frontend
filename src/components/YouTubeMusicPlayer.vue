@@ -286,6 +286,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+  background-color: whitesmoke;
 
   #youtube-player-thot {
     visibility: hidden;

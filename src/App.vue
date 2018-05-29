@@ -25,7 +25,7 @@
       </nav>
     </header> -->
     <transition name="fade" mode="out-in">
-      <router-view class="view"></router-view>
+      <router-view class="view mdc-top-app-bar--prominent-fixed-adjust"></router-view>
     </transition>
     <YouTubeMusicPlayer />
     <Snackbar />
@@ -91,10 +91,18 @@
           // if (evt.data == "pong") {
           //   setTimeout(function() { ws.send("ping"); }, 2000)
           // }
+          console.log('websocket content')
+          console.log(evt.data)
           const data = JSON.parse(evt.data)
           if (data.type === 'text') {
             this.$store.commit('updateSnackBarMsg', JSON.stringify(data.content))
             this.$store.commit('toggleSnackBar', true)
+          } else if (data.type === 'play') {
+            const result = data.content.split(":")
+            this.$store.commit('updatePlay', {
+              id: result[0],
+              plays: result[1]
+            })
           }
         }
       }
@@ -123,4 +131,9 @@
 @import "~material-components-web/dist/material-components-web.css";
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+.view {
+  // so the youtube music player won't cover the content
+  margin-bottom: 135px;
+}
 </style>

@@ -1,5 +1,28 @@
 <template lang="html">
-  <header class="mdc-toolbar">
+  <header class="mdc-top-app-bar mdc-top-app-bar--prominent">
+    <div class="mdc-top-app-bar__row">
+      <section class="mdc-top-app-bar__section mdc-toolbar__section--align-start">
+        <button
+          class="material-icons mdc-top-app-bar__navigation-icon"
+          @click.stop="toggleDrawer(true)"
+          >menu</button>
+
+
+        <span class="mdc-top-app-bar__title">My Shitty Music ({{workingEnvironment}})</span>
+      </section>
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+        <button
+          class="material-icons mdc-top-app-bar__action-item"
+          aria-label="Download"
+          >file_download</button>
+        <button
+          class="material-icons mdc-top-app-bar__action-item"
+          aria-label="Download"
+          v-on:click="login()">print</button>
+      </section>
+    </div>
+  </header>
+  <!-- <header class="mdc-toolbar mdc-top-app-bar--fixed mdc-top-app-bar mdc-top-app-bar--prominent">
     <div class="mdc-toolbar__row">
       <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
         <a href="#" class="material-icons mdc-toolbar__menu-icon" @click.stop="toggleDrawer(true)">menu</a>
@@ -15,20 +38,20 @@
           v-on:click="login()">print</a>
       </section>
     </div>
-  </header>
+  </header> -->
+
 </template>
 
 <script>
 import { mapMutations } from 'vuex'
-// import {toolbar as MDCToolbar} from 'material-components-web/dist/material-components-web';
-
-import {MDCToolbar} from '@material/toolbar/dist/mdc.toolbar';
+import {MDCTopAppBar} from '@material/top-app-bar/index';
 export default {
   computed: {
     workingEnvironment() { return this.$store.state.environment }
   },
   mounted() {
-    const toolbar = new MDCToolbar(document.querySelector('.mdc-toolbar'));
+    const topAppBarElement = document.querySelector('.mdc-top-app-bar');
+    const topAppBar = new MDCTopAppBar(topAppBarElement);
   },
   methods: {
     ...mapMutations({
@@ -54,5 +77,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.mdc-top-app-bar {
+  z-index: 1;
+}
 </style>
