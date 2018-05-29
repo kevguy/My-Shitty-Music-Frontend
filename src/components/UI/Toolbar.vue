@@ -19,6 +19,7 @@
           class="material-icons mdc-top-app-bar__action-item"
           aria-label="Download"
           v-on:click="login()">print</button>
+        <GoogleSignInBtn />
       </section>
     </div>
   </header>
@@ -45,7 +46,10 @@
 <script>
 import { mapMutations } from 'vuex'
 import {MDCTopAppBar} from '@material/top-app-bar/index';
+import GoogleSignInBtn from './GoogleSignInBtn.vue'
+
 export default {
+  components: { GoogleSignInBtn },
   computed: {
     workingEnvironment() { return this.$store.state.environment }
   },
