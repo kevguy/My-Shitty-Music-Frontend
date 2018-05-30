@@ -7,7 +7,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
-    "test:e2e": "vue-cli-service test:e2e"
+    "test:e2e": "vue-cli-service test:e2e",
+    "start": "node server.js"
   },
   "dependencies": {
     "@material/auto-init": "^0.35.0",
@@ -22,6 +23,7 @@
     "@material/slider": "^0.35.0",
     "@material/textfield": "^0.35.1",
     "@material/top-app-bar": "^0.35.2",
+    "express": "^4.16.3",
     "googleapis": "^31.0.2",
     "material-components-web": "^0.35.1",
     "moment": "^2.22.1",
@@ -43,6 +45,7 @@
     "babel-core": "^7.0.0-0",
     "babel-jest": "^22.0.4",
     "node-sass": "^4.7.2",
+    "pm2": "^2.10.4",
     "sass-loader": "^6.0.6",
     "vue-template-compiler": "^2.5.13"
   },
