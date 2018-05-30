@@ -14,6 +14,7 @@ export default new Vuex.Store({
   state: {
     baseUrl: 'http://localhost:3000',
     rootUrl: 'http://localhost:8080',
+    wsUrl: 'ws://localhost:3000/websocket',
     isLogin: false,
     userDisplayName: '',
     userId: '',
@@ -31,6 +32,38 @@ export default new Vuex.Store({
           }
         }
         return song
+      })
+      state.songs = songs
+    },
+    updateUpvote (state, { songId, upvotes, userId }) {
+      const songs = state.songs.map((song) => {
+        if (song.id === songId) {
+          const payload = {
+            ...song,
+            upvotes
+          }
+          if (userId === state.userId) {
+            payload.isHeart = true
+          }
+          return payload
+        }
+        return song
+      })
+      state.songs = songs
+    },
+    addHeartsToSongs (state, payload) {
+      const songs = state.songs.map((song) => {
+        if (payload.indexOf(song.id) >= 0) {
+          return {
+            ...song,
+            isHeart: true
+          }
+        } else {
+          return {
+            ...song,
+            isHeart: false
+          }
+        }
       })
       state.songs = songs
     },
@@ -53,7 +86,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async UPDATE_LOGIN_STATE ({ state, commit }, info) {
+    async UPDATE_LOGIN_STATE ({ state, commit, dispatch }, info) {
       console.log(info)
       try {
         const res = await fetch(`${state.baseUrl}/check-login`, {
@@ -76,6 +109,8 @@ export default new Vuex.Store({
             userId: info.user_id,
             token: info.token
           })
+
+          await dispatch('FETCH_USER_UPVOTES')
         } else {
           commit('logout')
         }
@@ -113,7 +148,11 @@ export default new Vuex.Store({
     },
     async FETCH_SONGS ({ commit, state }) {
       const res = await fetch(`${state.baseUrl}/songs`)
-      const result = await res.json()
+      let result = await res.json()
+      result = result.map((song) => ({
+        ...song,
+        isHeart: false
+      }))
       commit('updateSongs', result)
     },
     async FETCH_PLAYS ({ commit, state }) {
@@ -131,6 +170,21 @@ export default new Vuex.Store({
         plays: lookup[song.id]
       }))
       commit('updateSongs', songs)
+    },
+    async FETCH_USER_UPVOTES ({ commit, state }) {
+      try {
+        const res = await fetch(`${state.baseUrl}/users/upvotes/${state.userId}`, {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'x-access-token': state.token
+          }
+        })
+        const result = await res.json()
+        commit('addHeartsToSongs', result.upvotes)
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
 })

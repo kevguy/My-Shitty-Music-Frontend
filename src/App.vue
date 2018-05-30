@@ -77,16 +77,14 @@
         display_name: data.userDisplayName
       })
 
-      if (this.$store.state.isLogin) {
-        this.connectToWebSocket()
-      }
+      this.connectToWebSocket()
     },
     methods: {
       closeDrawer() {
         this.$store.commit("toggleDrawer", false)
       },
       connectToWebSocket() {
-        this.ws = new WebSocket("ws://localhost:3000/websocket")
+        this.ws = new WebSocket(this.$store.state.wsUrl)
         this.ws.onopen = () => {
           console.log('websocket connected')
           this.$store.commit('updateSnackBarMsg', 'websocket connected')
@@ -117,6 +115,20 @@
               id: result[0],
               plays: result[1]
             })
+          } else {
+            const result = JSON.parse(data.content)
+            // if ($this.$store.state.isLogin && result.userid === this.$store.state.userId) {
+            // use this when deploy
+            // }
+            const msg = `${result.username} upvoted ${result.song}`
+            this.$store.commit('updateSnackBarMsg', msg)
+            this.$store.commit('toggleSnackBar', true)
+
+            this.$store.commit('updateUpvote', {
+              songId: result.songid,
+              upvotes: result.upvotes,
+              userId: result.userid
+            })
           }
         }
       }
@@ -145,6 +157,10 @@
 @import "~material-components-web/dist/material-components-web.css";
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+body {
+  margin: 0px;
+}
 
 .view {
   // so the youtube music player won't cover the content

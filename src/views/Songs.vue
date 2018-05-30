@@ -10,6 +10,7 @@
       v-bind:url="song.thumbnails.medium"
       v-bind:upvotes="song.upvotes"
       v-bind:plays="song.plays"
+      v-bind:isHeart="song.isHeart"
     />
   </div>
 </template>
@@ -65,6 +66,7 @@ export default {
 .songs-view {
   display: flex;
   flex-flow: row wrap;
+  justify-content: space-evenly;
 }
 
 </style>

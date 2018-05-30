@@ -22,13 +22,26 @@
     </a>
     <hr class="mdc-list-divider">
     <div class="mdc-card__actions">
-      <div class="mdc-card__action-buttons demo-card__action-buttons--text-only" v-on:click="playSong(youtubeId, songId)">Actions</div>
+      <button class="mdc-button mdc-card__action-buttons demo-card__action-buttons--text-only" v-on:click="playSong(youtubeId, songId)">Play</button>
       <div class="mdc-card__action-icons">
-        <i class="material-icons demo-card__action-icon--star" tabindex="0" role="button" title="upvote">
+        <!-- <i class="material-icons demo-card__action-icon--star" tabindex="0" role="button" title="upvote">
           arrow_upward
+        </i> -->
+        <i class="mdc-icon-toggle material-icons hearted" role="button"
+           aria-label="I Go Heart" tabindex="0"
+           data-toggle-on='{"label": "I hate it", "content": "favorite"}'
+           data-toggle-off='{"label": "I heart it", "content": "favorite_border"}'
+           v-on:click="heartSong(songId)"
+           v-bind:class="{ 'mdc-icon-toggle--disabled': isHeart }"
+           v-bind:aria-pressed="isHeart"
+           >
+          {{isHeart ? 'favorite' : 'favorite_border' }}
         </i>
+        <!-- <i class="material-icons demo-card__action-icon--star" tabindex="0" role="button" title="heart">
+          favorite_border
+        </i> -->
         {{upvotes}}
-        <i class="material-icons demo-card__action-icon--star" tabindex="0" role="button" title="upvote">
+        <!-- <i class="material-icons demo-card__action-icon--star" tabindex="0" role="button" title="upvote">
           arrow_downward
         </i>
 
@@ -46,7 +59,7 @@
         </i>
         <i class="material-icons demo-card__action-icon--star" tabindex="0" role="button" title="5 stars">
           star_border
-        </i>
+        </i> -->
       </div>
       <!-- <button class="mdc-button mdc-card__action mdc-card__action--button" v-on:click.stop="view()">View</button>
       <button class="mdc-button mdc-card__action mdc-card__action--button" v-on:click="download(url, originalName)">Download</button> -->
@@ -55,8 +68,13 @@
 </template>
 
 <script>
+import {MDCIconToggle} from '@material/icon-toggle';
+
 export default {
-  props: [ "title", "artist", "timestamp", "url", "upvotes", "plays", "youtubeId", "songId" ],
+  props: [ "title", "artist", "timestamp", "url", "upvotes", "plays", "youtubeId", "songId", "isHeart" ],
+  mounted() {
+    MDCIconToggle.attachTo(document.querySelector('.mdc-icon-toggle'));
+  },
   methods: {
     playSong(youtubeId, songId) {
       // this.$store.commit('YouTubeMusicPlayer/updateCurrentVideoId', '5a_u1et37W4')
@@ -70,12 +88,26 @@ export default {
         content: songId
       }))
       this.$store.commit('toggleSendWebsocketMsg', true)
+    },
+    heartSong(songID) {
+      if (this.$store.state.isLogin) {
+        this.$store.commit('updateWebsocketMsg', JSON.stringify({
+          type: 'upvote',
+          // token:userID:songID
+          content: `${this.$store.state.token}:${this.$store.state.userId}:${songID}`
+        }))
+        this.$store.commit('toggleSendWebsocketMsg', true)
+      }
     }
   }
 }
 </script>
 
 <style lang="scss">
+.hearted {
+  color: red
+}
+
 .demo-card--music {
     border-radius: 24px 4px;
 }

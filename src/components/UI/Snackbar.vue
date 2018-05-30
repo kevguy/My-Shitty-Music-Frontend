@@ -29,7 +29,7 @@ export default {
         console.log(this.snackBarMsg)
         const dataObj = {
           message: this.snackBarMsg,
-          actionText: 'Undo',
+          actionText: 'close',
           actionHandler: () => {
             console.log(this.snackBarMsg)
           }

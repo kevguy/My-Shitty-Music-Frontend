@@ -188,7 +188,7 @@ export default {
       console.log(JSON.stringify(payload))
 
       try {
-        const res = await fetch('http://localhost:3000/songs', {
+        const res = await fetch(`${this.$store.state.baseUrl}/songs`, {
           method: 'POST',
           mode: 'cors',
           // headers: {

@@ -100,11 +100,12 @@ export default {
   // display: inline-block;
   background: white;
   color: #444;
-  width: 190px;
+  // width: 190px;
   border-radius: 5px;
   border: thin solid #888;
   box-shadow: 1px 1px 1px grey;
   white-space: nowrap;
+  padding-right: 4px;
 }
 #customBtn:hover {
   cursor: pointer;
@@ -123,8 +124,8 @@ span.icon {
 span.buttonText {
   display: inline-block;
   vertical-align: middle;
-  padding-left: 42px;
-  padding-right: 42px;
+  // padding-left: 42px;
+  // padding-right: 42px;
   font-size: 14px;
   font-weight: bold;
   /* Use the Roboto font that is loaded in the <head> */

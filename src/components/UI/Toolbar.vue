@@ -11,41 +11,25 @@
         <span class="mdc-top-app-bar__title">My Shitty Music</span>
       </section>
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-        <button
+        <span class="mdc-top-app-bar__action-item mdc-typography--body3 display-name">{{displayName}}</span>
+        <!-- <button
           class="material-icons mdc-top-app-bar__action-item"
           aria-label="Download"
           >file_download</button>
         <button
           class="material-icons mdc-top-app-bar__action-item"
           aria-label="Download"
-          v-on:click="login()">print</button>
+          v-on:click="login()">print</button> -->
         <button
           class="material-icons mdc-top-app-bar__action-item"
           aria-label="Logout"
           v-if="isLogin"
           v-on:click="logout()">exit_to_app</button>
-        <GoogleSignInBtn />
+        <GoogleSignInBtn v-if="!isLogin"/>
+
       </section>
     </div>
   </header>
-  <!-- <header class="mdc-toolbar mdc-top-app-bar--fixed mdc-top-app-bar mdc-top-app-bar--prominent">
-    <div class="mdc-toolbar__row">
-      <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-        <a href="#" class="material-icons mdc-toolbar__menu-icon" @click.stop="toggleDrawer(true)">menu</a>
-        <span class="mdc-toolbar__title">My Shitty Music ({{workingEnvironment}})</span>
-      </section>
-      <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
-        <a href="#" class="material-icons mdc-toolbar__icon demo-toolbar__icon--custom" aria-label="Download" alt="Download">file_download</a>
-        <a
-          href="#"
-          class="material-icons mdc-toolbar__icon demo-toolbar__icon--custom"
-          aria-label="Print this page"
-          alt="Print this page"
-          v-on:click="login()">print</a>
-      </section>
-    </div>
-  </header> -->
-
 </template>
 
 <script>
@@ -58,7 +42,8 @@ export default {
   computed: {
     workingEnvironment() { return this.$store.state.environment },
     ...mapState({
-      isLogin: state => state.isLogin
+      isLogin: state => state.isLogin,
+      displayName: state => state.userDisplayName
     })
   },
   mounted() {
@@ -76,7 +61,7 @@ export default {
     //   this.$router.push({
     //     path: '/'
     //   })
-      window.location.href = this.$store.state.baseUrl
+      window.location.href = this.$store.state.rootUrl
     }
 
   }
@@ -85,6 +70,26 @@ export default {
 
 <style lang="scss" scoped>
 .mdc-top-app-bar {
+  z-index: 1;
+}
+.display-name {
+  width: unset;
+  padding-bottom: 12px;
+
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1.25rem;
+  line-height: 2rem;
+  font-weight: 500;
+  letter-spacing: 0.0125em;
+  text-decoration: inherit;
+  text-transform: inherit;
+  padding-left: 20px;
+  padding-right: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   z-index: 1;
 }
 </style>
