@@ -8,7 +8,7 @@
           >menu</button>
 
 
-        <span class="mdc-top-app-bar__title">My Shitty Music ({{workingEnvironment}})</span>
+        <span class="mdc-top-app-bar__title">My Shitty Music</span>
       </section>
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
         <button
@@ -19,6 +19,11 @@
           class="material-icons mdc-top-app-bar__action-item"
           aria-label="Download"
           v-on:click="login()">print</button>
+        <button
+          class="material-icons mdc-top-app-bar__action-item"
+          aria-label="Logout"
+          v-if="isLogin"
+          v-on:click="logout()">exit_to_app</button>
         <GoogleSignInBtn />
       </section>
     </div>
@@ -44,14 +49,17 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import {MDCTopAppBar} from '@material/top-app-bar/index';
 import GoogleSignInBtn from './GoogleSignInBtn.vue'
 
 export default {
   components: { GoogleSignInBtn },
   computed: {
-    workingEnvironment() { return this.$store.state.environment }
+    workingEnvironment() { return this.$store.state.environment },
+    ...mapState({
+      isLogin: state => state.isLogin
+    })
   },
   mounted() {
     const topAppBarElement = document.querySelector('.mdc-top-app-bar');
@@ -59,24 +67,18 @@ export default {
   },
   methods: {
     ...mapMutations({
-      toggleDrawer: 'toggleDrawer'
+      toggleDrawer: 'toggleDrawer',
+      // logout: 'logout'
     }),
-    // toggleDrawer(val) {
-    //   this.$store.commit('toggleDrawer', val)
-    // }
-    login() {
-      fetch(`http://localhost:3000/googleauth/loginurl?redirect=http://localhost:8081${this.$route.fullPath}`, {
-          method: 'GET',
-          mode: 'cors',
-        })
-        .then(res => res.json())
-        .then((result) => {
-          console.log(result)
-          console.log("fuck")
-          window.location.href = result
-          // "https://accounts.google.com/o/oauth2/auth?client_id=138866895643-s1ujmhe4bt35gbhht9p53st8rusqh2s2.apps.googleusercontent.com\u0026redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fgoogleauth%2Fauth\u0026response_type=code\u0026scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email\u0026state=JPtpS7XXz9d%2BZ1IMohq%2FMzt4suJ32LhrJL9ePvjemIg%3D"
-        })
+    logout() {
+      this.$store.commit('logout')
+      localStorage.setItem('userInfo', '')
+    //   this.$router.push({
+    //     path: '/'
+    //   })
+      window.location.href = this.$store.state.baseUrl
     }
+
   }
 }
 </script>

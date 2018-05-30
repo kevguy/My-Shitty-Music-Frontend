@@ -64,8 +64,22 @@
         }
       }
     },
-    mounted () {
-      this.connectToWebSocket()
+    async mounted () {
+      let data = localStorage.getItem('userInfo')
+      if (data) {
+        data = JSON.parse(data)
+      } else {
+        this.$store.commit('logout')
+      }
+      const hihi = await this.$store.dispatch('UPDATE_LOGIN_STATE', {
+        user_id: data.userId,
+        token: data.token,
+        display_name: data.userDisplayName
+      })
+
+      if (this.$store.state.isLogin) {
+        this.connectToWebSocket()
+      }
     },
     methods: {
       closeDrawer() {

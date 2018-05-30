@@ -12,6 +12,12 @@ export default new Vuex.Store({
     UI, Websocket, YouTubeMusicPlayer
   },
   state: {
+    baseUrl: 'http://localhost:3000',
+    rootUrl: 'http://localhost:8080',
+    isLogin: false,
+    userDisplayName: '',
+    userId: '',
+    token: '',
     songs: []
   },
   mutations: {
@@ -27,16 +33,91 @@ export default new Vuex.Store({
         return song
       })
       state.songs = songs
+    },
+    updateLoginInfo (state, payload) {
+      state.isLogin = payload.isLogin
+      state.userDisplayName = payload.userDisplayName
+      state.userId = payload.userId
+      state.token = payload.token
+    },
+    logout (state) {
+      state.isLogin = false
+      state.userDisplayName = ''
+      state.userId = ''
+      state.token = ''
+
+      if (window && window.localStorage) {
+        localStorage.setItem('userInfo', '')
+        // window.location.href = state.rootUrl
+      }
     }
   },
   actions: {
-    async FETCH_SONGS ({ commit }) {
-      const res = await fetch('http://localhost:3000/songs')
+    async UPDATE_LOGIN_STATE ({ state, commit }, info) {
+      console.log(info)
+      try {
+        const res = await fetch(`${state.baseUrl}/check-login`, {
+          method: 'POST',
+          mode: 'cors',
+          // headers: {
+          //   'Accept': 'application/json',
+          //   'Content-Type': 'application/json'
+          // },
+          body: JSON.stringify({
+            user_id: info.user_id,
+            token: info.token
+          })
+        })
+        const result = await res.json()
+        if (result.status) {
+          commit('updateLoginInfo', {
+            isLogin: true,
+            userDisplayName: info.display_name,
+            userId: info.user_id,
+            token: info.token
+          })
+        } else {
+          commit('logout')
+        }
+      } catch (e) {
+        console.error(e)
+        commit('logout')
+      }
+    },
+    async GOOGLE_LOGIN ({ state, commit }, googleCode) {
+      try {
+        const res = await fetch(`${state.baseUrl}/authenticate`, {
+          method: 'POST',
+          mode: 'cors',
+          // headers: {
+          //   'Accept': 'application/json',
+          //   'Content-Type': 'application/json'
+          // },
+          body: JSON.stringify({
+            type: 'google',
+            code: googleCode
+          })
+        })
+        const result = await res.json()
+        const payload = {
+          isLogin: true,
+          userId: result.user_id,
+          token: result.token,
+          userDisplayName: result.user_name
+        }
+        commit('updateLoginInfo', payload)
+      } catch (e) {
+        console.error(e)
+        commit('logout')
+      }
+    },
+    async FETCH_SONGS ({ commit, state }) {
+      const res = await fetch(`${state.baseUrl}/songs`)
       const result = await res.json()
       commit('updateSongs', result)
     },
     async FETCH_PLAYS ({ commit, state }) {
-      const res = await fetch('http://localhost:3000/songs/plays')
+      const res = await fetch(`${state.baseUrl}/songs/plays`)
       const result = await res.json()
       const lookup = {}
       for (let item of result) {

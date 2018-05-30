@@ -61,28 +61,34 @@ export default {
     // console.log(google)
   },
   methods: {
-    signIn() {
-      this.auth2.grantOfflineAccess()
-        .then((result) => {
-          console.log(result)
-          return result.code
+    async signIn() {
+      const googleLoginResult = await this.auth2.grantOfflineAccess()
+      if (googleLoginResult) {
+        const code = googleLoginResult.code
+        const result = await this.$store.dispatch('GOOGLE_LOGIN', code)
+        if (this.$store.state.isLogin) {
+          localStorage.setItem('userInfo', JSON.stringify({
+            userId: this.$store.state.userId,
+            userDisplayName: this.$store.state.userDisplayName,
+            token: this.$store.state.token
+          }))
+        }
+
+        let data = localStorage.getItem('userInfo')
+        if (data) {
+          data = JSON.parse(data)
+        } else {
+          this.$store.commit('logout')
+        }
+        const hihi = await this.$store.dispatch('UPDATE_LOGIN_STATE', {
+          user_id: data.userId,
+          token: data.token,
+          display_name: data.userDisplayName
         })
-        .then((code) => {
-          fetch('http://localhost:3000/authenticate', {
-            method: 'POST',
-            mode: 'cors',
-            // headers: {
-            //   'Accept': 'application/json',
-            //   'Content-Type': 'application/json'
-            // },
-            body: JSON.stringify({
-              type: 'google',
-              code
-            })
-          })
-          .then((result) => result.json())
-          .then(result => console.log(result))
-        })
+      } else {
+        // update login state
+        this.$store.commit('logout')
+      }
     }
   }
 }

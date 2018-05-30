@@ -136,6 +136,17 @@ export default {
   mounted() {
     this.mountHandler()
   },
+  beforeRouteLeave(to, from , next) {
+    console.log('beforeRouteLeave')
+    if (this.name || this.artist) {
+      const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+      if (answer) {
+        next()
+      } else {
+        next(false)
+      }
+    }
+  },
   methods: {
     async searchYouTube() {
       if (!this.name && !this.artist) return

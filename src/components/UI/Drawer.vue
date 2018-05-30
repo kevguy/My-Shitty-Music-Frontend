@@ -2,8 +2,14 @@
   <aside class="mdc-drawer mdc-drawer--temporary mdc-typography">
       <nav class="mdc-drawer__drawer">
         <header class="mdc-drawer__header">
-          <div class="mdc-drawer__header-content mdc-theme--text-primary-on-primary mdc-theme--primary-bg">
+          <!-- <div class="mdc-drawer__header-content mdc-theme--text-primary-on-primary mdc-theme--primary-bg">
             My Shitty Music
+          </div> -->
+          <div class="mdc-drawer__header-content mdc-theme--text-primary-on-primary mdc-theme--primary-bg" v-if="isLogin">
+            {{displayName}}
+          </div>
+          <div class="mdc-drawer__header-content mdc-theme--text-primary-on-primary mdc-theme--primary-bg" v-else>
+            Not Signed Yet
           </div>
         </header>
         <div class="">
@@ -49,7 +55,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import { MDCTemporaryDrawer } from '@material/drawer/dist/mdc.drawer';
 
 export default {
@@ -60,7 +66,11 @@ export default {
   },
   computed: {
     drawerOpen() { return this.$store.state.UI.drawerOpen },
-    workingEnvironment() { return this.$store.state.environment }
+    workingEnvironment() { return this.$store.state.environment },
+    ...mapState({
+      isLogin: state => state.isLogin,
+      displayName: state => state.userDisplayName
+    })
   },
   watch: {
     drawerOpen(val) { this.drawer.open = val }

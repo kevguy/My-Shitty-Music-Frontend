@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from './store'
 import Home from './views/Home.vue'
 import About from './views/About.vue'
 
@@ -9,7 +10,7 @@ import AddSong from './views/AddSong.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   fallback: false,
   scrollBehavior: () => ({ y: 0 }),
@@ -37,3 +38,32 @@ export default new Router({
     { path: '/', redirect: '/songs' }
   ]
 })
+
+router.beforeEach(async (to, form, next) => {
+  console.log('beforeEach')
+  console.log(to)
+  if (window && window.localStorage && (to.path !== '/songs')) {
+    console.log('conducting checking')
+    let data = localStorage.getItem('userInfo')
+    if (data) {
+      data = JSON.parse(data)
+    } else {
+      next('/')
+      return
+    }
+    const hihi = await store.dispatch('UPDATE_LOGIN_STATE', {
+      user_id: data.userId,
+      token: data.token,
+      display_name: data.userDisplayName
+    })
+    console.log('hihi')
+    console.log(hihi)
+    if (!store.state.isLogin) {
+      next('/')
+      return
+    }
+  }
+  next()
+})
+
+export default router
