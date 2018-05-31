@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.a1ab0ffcc47118f738d905c3dd2d7955.js"
+  "/precache-manifest.022c5b8b7136763ef34c5594443eb742.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "my-shitty-music"});

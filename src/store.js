@@ -16,7 +16,7 @@ export default new Vuex.Store({
     baseUrl: 'https://my-shitty-music-backend.herokuapp.com',
     // rootUrl: 'http://localhost:8080',
     rootUrl: 'https://my-shitty-music.herokuapp.com',
-    wsUrl: 'ws://my-shitty-music-backend.herokuapp.com/websocket',
+    wsUrl: 'wss://my-shitty-music-backend.herokuapp.com/websocket',
     isLogin: false,
     userDisplayName: '',
     userId: '',
