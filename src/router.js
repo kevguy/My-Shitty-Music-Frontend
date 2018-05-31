@@ -35,7 +35,12 @@ const router = new Router({
       name: 'add song',
       component: AddSong
     },
-    { path: '/', redirect: '/songs' }
+    {
+      path: '/',
+      name: 'songs',
+      component: Songs
+    },
+    { path: '*', redirect: '/' }
   ]
 })
 
