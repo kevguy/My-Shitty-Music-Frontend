@@ -66,6 +66,10 @@ export default {
       if (googleLoginResult) {
         const code = googleLoginResult.code
         const result = await this.$store.dispatch('GOOGLE_LOGIN', code)
+        if (result.error) {
+      		console.warn(result);
+      		return;
+      	}
         if (this.$store.state.isLogin) {
           localStorage.setItem('userInfo', JSON.stringify({
             userId: this.$store.state.userId,
