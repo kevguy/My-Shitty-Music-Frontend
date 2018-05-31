@@ -15,7 +15,7 @@
         <div class="demo-card__music-info">
           <div class="demo-card__music-title mdc-typography--headline mdc-typography--headline5">{{title}}</div>
           <div class="demo-card__music-artist mdc-typography--body2">{{artist}}</div>
-          <div class="demo-card__music-year mdc-typography--body2">({{timestamp}})</div>
+          <div class="demo-card__music-year mdc-typography--body2">({{formattedTimeStamp}})</div>
           <div class="demo-card__music-year mdc-typography--body2">Played {{plays}} times</div>
         </div>
       </div>
@@ -69,11 +69,17 @@
 
 <script>
 import {MDCIconToggle} from '@material/icon-toggle';
+import moment from 'moment'
 
 export default {
   props: [ "title", "artist", "timestamp", "url", "upvotes", "plays", "youtubeId", "songId", "isHeart" ],
   mounted() {
     MDCIconToggle.attachTo(document.querySelector('.mdc-icon-toggle'));
+  },
+  computed: {
+    formattedTimeStamp() {
+      return moment(this.timestamp).format("MMM Do YYYY")
+    }
   },
   methods: {
     playSong(youtubeId, songId) {
@@ -97,6 +103,13 @@ export default {
           content: `${this.$store.state.token}:${this.$store.state.userId}:${songID}`
         }))
         this.$store.commit('toggleSendWebsocketMsg', true)
+
+        // instantly show changes on upvote
+        this.$store.commit('updateUpvote', {
+          songId: songID,
+          upvotes: this.upvotes,
+          userId: this.$store.state.userId
+        })
       }
     }
   }

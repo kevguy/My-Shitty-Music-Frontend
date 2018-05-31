@@ -12,9 +12,11 @@ export default new Vuex.Store({
     UI, Websocket, YouTubeMusicPlayer
   },
   state: {
-    baseUrl: 'http://localhost:3000',
-    rootUrl: 'http://localhost:8080',
-    wsUrl: 'ws://localhost:3000/websocket',
+    // baseUrl: 'http://localhost:3000',
+    baseUrl: 'https://my-shitty-music-backend.herokuapp.com',
+    // rootUrl: 'http://localhost:8080',
+    rootUrl: 'https://my-shitty-music.herokuapp.com',
+    wsUrl: 'ws://my-shitty-music-backend.herokuapp.com/websocket',
     isLogin: false,
     userDisplayName: '',
     userId: '',

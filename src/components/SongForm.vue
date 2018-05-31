@@ -188,13 +188,18 @@ export default {
       console.log(JSON.stringify(payload))
 
       try {
-        const res = await fetch(`${this.$store.state.baseUrl}/songs`, {
+        const res = await fetch(`${this.$store.state.baseUrl}/add-song`, {
           method: 'POST',
           mode: 'cors',
-          // headers: {
-          //   'Accept': 'application/json',
-          //   'Content-Type': 'application/json'
-          // },
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'x-access-token': this.$store.state.token
+          },
+          // body: JSON.stringify({
+          //   userId: this.$store.state.userId,
+          //   song: payload
+          // })
           body: JSON.stringify(payload)
         })
 
