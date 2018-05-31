@@ -62,36 +62,42 @@ export default {
   },
   methods: {
     async signIn() {
-      const googleLoginResult = await this.auth2.grantOfflineAccess()
-      if (googleLoginResult) {
-        const code = googleLoginResult.code
-        const result = await this.$store.dispatch('GOOGLE_LOGIN', code)
-        console.log(result)
-        if (result.error) {
-      		console.warn(result);
-      		return;
-      	}
-        if (this.$store.state.isLogin) {
-          localStorage.setItem('userInfo', JSON.stringify({
-            userId: this.$store.state.userId,
-            userDisplayName: this.$store.state.userDisplayName,
-            token: this.$store.state.token
-          }))
-        }
+      try {
+        const googleLoginResult = await this.auth2.grantOfflineAccess()
+        if (googleLoginResult) {
+          const code = googleLoginResult.code
+          console.log(code)
+          const result = await this.$store.dispatch('GOOGLE_LOGIN', code)
+          // console.log(result)
+          // if (result.error) {
+          //   console.warn(result);
+          //   return;
+          // }
+          if (this.$store.state.isLogin) {
+            localStorage.setItem('userInfo', JSON.stringify({
+              userId: this.$store.state.userId,
+              userDisplayName: this.$store.state.userDisplayName,
+              token: this.$store.state.token
+            }))
+          }
 
-        let data = localStorage.getItem('userInfo')
-        if (data) {
-          data = JSON.parse(data)
+          let data = localStorage.getItem('userInfo')
+          if (data) {
+            data = JSON.parse(data)
+          } else {
+            this.$store.commit('logout')
+          }
+          const hihi = await this.$store.dispatch('UPDATE_LOGIN_STATE', {
+            user_id: data.userId,
+            token: data.token,
+            display_name: data.userDisplayName
+          })
         } else {
+          // update login state
           this.$store.commit('logout')
         }
-        const hihi = await this.$store.dispatch('UPDATE_LOGIN_STATE', {
-          user_id: data.userId,
-          token: data.token,
-          display_name: data.userDisplayName
-        })
-      } else {
-        // update login state
+      } catch (e) {
+        console.error(e)
         this.$store.commit('logout')
       }
     }
