@@ -3,7 +3,9 @@ var manifestJSON = require('./public/manifest.json')
 const pwaArgs = {
   themeColor: manifestJSON.theme_color,
   name: manifestJSON.short_name,
-  msTileColor: manifestJSON.background_color
+  msTileColor: '#BA68C8',
+  appleMobileWebAppCapable: 'yes',
+  appleMobileWebAppStatusBarStyle: '#4A148C'
 }
 
 module.exports = {
