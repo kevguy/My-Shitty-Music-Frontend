@@ -26,6 +26,11 @@ const router = new Router({
     //   component: About
     // },
     {
+      path: '/',
+      name: 'songs',
+      component: Songs
+    },
+    {
       path: '/songs',
       name: 'songs',
       component: Songs
@@ -34,11 +39,6 @@ const router = new Router({
       path: '/add-song',
       name: 'add song',
       component: AddSong
-    },
-    {
-      path: '/',
-      name: 'songs',
-      component: Songs
     },
     { path: '*', redirect: '/' }
   ]
