@@ -66,6 +66,7 @@ export default {
       if (googleLoginResult) {
         const code = googleLoginResult.code
         const result = await this.$store.dispatch('GOOGLE_LOGIN', code)
+        console.log(result)
         if (result.error) {
       		console.warn(result);
       		return;
