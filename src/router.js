@@ -47,6 +47,7 @@ const router = new Router({
 router.beforeEach(async (to, form, next) => {
   console.log('beforeEach')
   console.log(to)
+  await store.dispatch('FETCH_SONGS')
   if (window && window.localStorage && (to.path !== '/songs')) {
     console.log('conducting checking')
     let data = localStorage.getItem('userInfo')
@@ -64,6 +65,7 @@ router.beforeEach(async (to, form, next) => {
     console.log('hihi')
     console.log(hihi)
     if (!store.state.isLogin) {
+      await store.dispatch('FETCH_USER_UPVOTES')
       next('/')
       return
     }

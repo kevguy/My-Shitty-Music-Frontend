@@ -53,7 +53,12 @@ export default {
   },
   created() {
     this.$store.dispatch('FETCH_SONGS')
-      .then(() => this.$store.dispatch('FETCH_PLAYS'))
+      .then(() => {
+        this.$store.dispatch('FETCH_PLAYS')
+        if (this.$store.state.isLogin) {
+          this.$store.dispathc('FETCH_USER_UPVOTES')
+        }
+      })
   },
   mounted() {
   },
