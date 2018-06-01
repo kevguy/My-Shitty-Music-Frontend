@@ -148,13 +148,19 @@ export default new Vuex.Store({
         commit('logout')
       }
     },
-    async FETCH_SONGS ({ commit, state }) {
+    async FETCH_SONGS ({ commit, state, dispatch }) {
       const res = await fetch(`${state.baseUrl}/songs`)
       let result = await res.json()
+      let isUpdate = state.songs.length > 0
       result = result.map((song) => ({
         ...song,
         isHeart: false
       }))
+      if (isUpdate) {
+        // already fetched songs before this time,
+        // so need to fetch user upvotes again
+        await dispatch('FETCH_USER_UPVOTES')
+      }
       commit('updateSongs', result)
     },
     async FETCH_PLAYS ({ commit, state }) {
