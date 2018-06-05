@@ -198,6 +198,24 @@ export default new Vuex.Store({
         console.error('FETCH_USER_UPVOTES failed')
         console.error(e)
       }
+    },
+    async UPDATE_FCM_TOKEN ({ commit, state }, token) {
+      try {
+        await fetch(`${state.baseUrl}/update-fcm-token`, {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'x-access-token': state.token
+          },
+          body: JSON.stringify({
+            token
+          })
+        })
+      } catch (e) {
+        console.error('Failed to UPDATE_FCM_TOKEN', e)
+      }
     }
   }
 })

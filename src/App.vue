@@ -1,29 +1,7 @@
 <template>
-  <!-- <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div> -->
   <div id="app" v-on:click.stop="closeDrawer()">
     <Toolbar />
     <Drawer />
-    <!-- <header class="header">
-      <nav class="inner">
-        <router-link to="/" exact>
-          <img class="logo" src="~public/logo-48.png" alt="logo">
-        </router-link>
-        <router-link to="/top">Top</router-link>
-        <router-link to="/new">New</router-link>
-        <router-link to="/show">Show</router-link>
-        <router-link to="/ask">Ask</router-link>
-        <router-link to="/job">Jobs</router-link>
-        <a class="github" href="https://github.com/vuejs/vue-hackernews-2.0" target="_blank" rel="noopener">
-          Built with Vue.js
-        </a>
-      </nav>
-    </header> -->
     <transition name="fade" mode="out-in">
       <router-view class="view mdc-top-app-bar--prominent-fixed-adjust"></router-view>
     </transition>
@@ -38,6 +16,8 @@
   import Toolbar from './components/UI/Toolbar.vue'
   import YouTubeMusicPlayer from '@/components/YouTubeMusicPlayer.vue'
   import Snackbar from '@/components/UI/Snackbar.vue'
+  import firebase from '@firebase/app'
+  import '@firebase/messaging'
 
   export default {
     components: { Drawer, Toolbar, YouTubeMusicPlayer, Snackbar },
@@ -46,11 +26,7 @@
         ws: undefined
       }
     },
-    async created() {
-      // const res = await fetch(`/api/environment`)
-      // const result = await res.json()
-      // this.$store.commit('SET_ENVIRONMENT', result.message)
-    },
+    async created() {},
     computed: {
       sendWebsocketMsg() { return this.$store.state.Websocket.sendWebsocketMsg }
     },
@@ -67,6 +43,34 @@
     },
     async mounted () {
       this.connectToWebSocket()
+      const messaging = firebase.messaging()
+      messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
+      try {
+        const result = await messaging.requestPermission()
+        // permission granted (don't need to check `result`)
+        // Retrieve an Instance ID token for use with FCM.
+        const currentToken = await messaging.getToken()
+        if (currentToken) {
+          // subscribe token to
+          if (this.$store.state.isLogin) {
+            this.$store.dispatch('UPDATE_FCM_TOKEN', currentToken)
+          }
+          // handle token refresh
+          messaging.onTokenRefresh(async () => {
+            try {
+              const currentToken = await messaging.getToken()
+              if (this.$store.state.isLogin) {
+                this.$store.dispatch('UPDATE_FCM_TOKEN', currentToken)
+              }
+            } catch (e) {
+              console.error('Unable to refresh token', e)
+            }
+          })
+        }
+      } catch (e) {
+        // unable to get permission to notify
+        console.log('Unable to get permission to notify.', e);
+      }
     },
     methods: {
       closeDrawer() {
@@ -75,23 +79,18 @@
       connectToWebSocket() {
         this.ws = new WebSocket(this.$store.state.wsUrl)
         this.ws.onopen = () => {
-          console.log('websocket connected')
-          this.$store.commit('updateSnackBarMsg', 'websocket connected')
-          this.$store.commit('toggleSnackBar', true)
-
-          this.ws.send(JSON.stringify({
-            type: 'text',
-            content: 'ping'
-          }))
+          if (process.env.NODE_ENV === 'development') {
+            console.log('websocket connected')
+            this.$store.commit('updateSnackBarMsg', 'websocket connected')
+            this.$store.commit('toggleSnackBar', true)
+            this.ws.send(JSON.stringify({
+              type: 'text',
+              content: 'ping'
+            }))
+          }
         }
 
         this.ws.onmessage = (evt) => {
-          // const myTextArea = document.getElementById("textarea1");
-          // myTextArea.value = myTextArea.value + "\n" + evt.data;
-          //
-          // if (evt.data == "pong") {
-          //   setTimeout(function() { ws.send("ping"); }, 2000)
-          // }
           console.log('websocket content')
           console.log(evt.data)
           const data = JSON.parse(evt.data)

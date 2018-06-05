@@ -8,7 +8,7 @@
           >menu</button>
 
 
-        <span class="mdc-top-app-bar__title">My Shitty Music</span>
+        <span class="mdc-top-app-bar__title">My Shitty Music {{appMode}}</span>
       </section>
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
         <span class="mdc-top-app-bar__action-item mdc-typography--body3 display-name">{{displayName}}</span>
@@ -39,6 +39,11 @@ import GoogleSignInBtn from './GoogleSignInBtn.vue'
 
 export default {
   components: { GoogleSignInBtn },
+  data() {
+    return {
+      appMode: process.env.NODE_ENV
+    }
+  },
   computed: {
     workingEnvironment() { return this.$store.state.environment },
     ...mapState({
