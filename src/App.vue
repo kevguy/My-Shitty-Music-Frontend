@@ -52,10 +52,14 @@
         // Retrieve an Instance ID token for use with FCM.
         const currentToken = await messaging.getToken()
         if (currentToken) {
-          if (process.env.NODE_ENV === 'production') {
-            const registration = await navigator.serviceWorker.register('/public/firebase-messaging-sw.js')
+          // if (process.env.NODE_ENV === 'production') {
+
+            // navigator.serviceWorker.register('/service-worker.js');
+            const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}firebase-messaging-sw.js`)
             messaging.useServiceWorker(registration)
-          }
+
+
+          // }
 
           // subscribe token to
           if (this.$store.state.isLogin) {

@@ -4,11 +4,11 @@ self.__precacheManifest = [
     "url": "/js/vendors~app.c3b39e4b.js"
   },
   {
-    "revision": "7da319ce7420f5c675b4",
-    "url": "/js/app.7da319ce.js"
+    "revision": "379b44bc28d087117e13",
+    "url": "/js/app.379b44bc.js"
   },
   {
-    "revision": "b6164ffedb9073f3d798f6bcc1eed675",
+    "revision": "e4f6e8f5898e5299630e9aaf33847b96",
     "url": "/index.html"
   },
   {
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/css/vendors~app.0.3636a09b.css"
   },
   {
-    "revision": "7da319ce7420f5c675b4",
+    "revision": "379b44bc28d087117e13",
     "url": "/css/app.4b59547d.css"
   }
 ];
