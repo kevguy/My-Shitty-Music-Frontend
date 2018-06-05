@@ -49,9 +49,10 @@
     },
     async mounted () {
       this.connectToWebSocket()
-      if (this.$store.state.isLogin) {
-        await this.handleFirebaseMessaging()
-      }
+
+      // await this.handleFirebaseMessaging()
+      await this.$store.dispatch('SETUP_FCM')
+
     },
     methods: {
       async handleFirebaseMessaging() {
