@@ -52,13 +52,13 @@ export default {
   watch: {
   },
   created() {
-    this.$store.dispatch('FETCH_SONGS')
-      .then(() => {
-        this.$store.dispatch('FETCH_PLAYS')
-        if (this.$store.state.isLogin) {
-          this.$store.dispatch('FETCH_USER_UPVOTES')
-        }
-      })
+    // this.$store.dispatch('FETCH_SONGS')
+    //   .then(() => {
+    //     this.$store.dispatch('FETCH_PLAYS')
+    //     if (this.$store.state.isLogin) {
+    //       this.$store.dispatch('FETCH_USER_UPVOTES')
+    //     }
+    //   })
   },
   mounted() {
   },

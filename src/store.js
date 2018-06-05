@@ -12,11 +12,9 @@ export default new Vuex.Store({
     UI, Websocket, YouTubeMusicPlayer
   },
   state: {
-    // baseUrl: 'http://localhost:3000',
-    baseUrl: 'https://my-shitty-music-backend.herokuapp.com',
-    // rootUrl: 'http://localhost:8080',
-    rootUrl: 'https://my-shitty-music.herokuapp.com',
-    wsUrl: 'wss://my-shitty-music-backend.herokuapp.com/websocket',
+    baseUrl: process.env.VUE_APP_BACKEND_URL,
+    rootUrl: process.env.VUE_APP_BASE_URL,
+    wsUrl: process.env.VUE_APP_WEB_SOCKET,
     isLogin: false,
     userDisplayName: '',
     userId: '',
@@ -104,6 +102,7 @@ export default new Vuex.Store({
           })
         })
         const result = await res.json()
+        console.log(result.status)
         if (result.status) {
           commit('updateLoginInfo', {
             isLogin: true,
@@ -156,7 +155,7 @@ export default new Vuex.Store({
         ...song,
         isHeart: false
       }))
-      if (isUpdate) {
+      if (isUpdate && state.isLogin) {
         // already fetched songs before this time,
         // so need to fetch user upvotes again
         await dispatch('FETCH_USER_UPVOTES')
@@ -164,20 +163,25 @@ export default new Vuex.Store({
       commit('updateSongs', result)
     },
     async FETCH_PLAYS ({ commit, state }) {
-      const res = await fetch(`${state.baseUrl}/songs/plays`)
-      const result = await res.json()
-      const lookup = {}
-      for (let item of result) {
-        console.log(item)
+      try {
+        const res = await fetch(`${state.baseUrl}/songs/plays`)
+        const result = await res.json()
+        const lookup = {}
+        // for (let item of result) {
+        //   console.log(item)
+        // }
+        result.forEach(item => {
+          lookup[item.SongID] = item.Plays
+        })
+        const songs = state.songs.map(song => ({
+          ...song,
+          plays: lookup[song.id]
+        }))
+        commit('updateSongs', songs)
+      } catch (e) {
+        console.error('FETCH_PLAYS failed')
+        console.error(e)
       }
-      result.forEach(item => {
-        lookup[item.SongID] = item.Plays
-      })
-      const songs = state.songs.map(song => ({
-        ...song,
-        plays: lookup[song.id]
-      }))
-      commit('updateSongs', songs)
     },
     async FETCH_USER_UPVOTES ({ commit, state }) {
       try {
@@ -191,6 +195,7 @@ export default new Vuex.Store({
         const result = await res.json()
         commit('addHeartsToSongs', result.upvotes)
       } catch (e) {
+        console.error('FETCH_USER_UPVOTES failed')
         console.error(e)
       }
     }
