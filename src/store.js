@@ -19,6 +19,7 @@ export default new Vuex.Store({
     rootUrl: process.env.VUE_APP_BASE_URL,
     wsUrl: process.env.VUE_APP_WEB_SOCKET,
     isLogin: false,
+    isFCMSetup: false,
     userDisplayName: '',
     userId: '',
     token: '',
@@ -86,6 +87,9 @@ export default new Vuex.Store({
         localStorage.setItem('userInfo', '')
         // window.location.href = state.rootUrl
       }
+    },
+    updateFCMStatus (state, payload) {
+      state.isFCMSetup = payload
     }
   },
   actions: {
@@ -115,6 +119,9 @@ export default new Vuex.Store({
           })
 
           await dispatch('FETCH_USER_UPVOTES')
+          if (window && navigator) {
+            await dispatch('SETUP_FCM')
+          }
         } else {
           commit('logout')
         }
@@ -204,6 +211,8 @@ export default new Vuex.Store({
     },
     async UPDATE_FCM_TOKEN ({ commit, state }, token) {
       try {
+        console.log(`before doing UPDATE_FCM_TOKEN`)
+        console.info(`login status is ${state.isLogin}`)
         await fetch(`${state.baseUrl}/update-fcm-token`, {
           method: 'POST',
           mode: 'cors',
@@ -216,6 +225,7 @@ export default new Vuex.Store({
             token
           })
         })
+        commit('updateFCMStatus', true)
       } catch (e) {
         console.error('Failed to UPDATE_FCM_TOKEN', e)
       }

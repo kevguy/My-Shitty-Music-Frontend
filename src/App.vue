@@ -29,7 +29,7 @@
     async created() {},
     computed: {
       sendWebsocketMsg() { return this.$store.state.Websocket.sendWebsocketMsg },
-      isLoginIn() { return this.$store.state.isLoginIn }
+      isLoginIn() { return this.$store.state.isLogin }
     },
     watch: {
       sendWebsocketMsg(val) {
@@ -42,17 +42,20 @@
         }
       },
       isLoginIn: async (val) => {
-        if (val) {
-          await this.handleFirebaseMessaging()
-        }
+        // if (val && this.$store) {
+        //   // await this.handleFirebaseMessaging()
+        //   console.log(this.$store)
+        //   await this.$store.dispatch('SETUP_FCM')
+        // }
       }
     },
     async mounted () {
       this.connectToWebSocket()
 
       // await this.handleFirebaseMessaging()
-      await this.$store.dispatch('SETUP_FCM')
-
+      if (!this.$store.state.isFCMSetup && this.$store.state.isLogin) {
+        await this.$store.dispatch('SETUP_FCM')
+      }
     },
     methods: {
       async handleFirebaseMessaging() {
