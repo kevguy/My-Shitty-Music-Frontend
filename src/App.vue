@@ -47,20 +47,15 @@
       messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
 
       try {
+        // navigator.serviceWorker.register('/service-worker.js');
+        const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}firebase-messaging-sw.js`)
+        messaging.useServiceWorker(registration)
+
         const result = await messaging.requestPermission()
         // permission granted (don't need to check `result`)
         // Retrieve an Instance ID token for use with FCM.
         const currentToken = await messaging.getToken()
         if (currentToken) {
-          // if (process.env.NODE_ENV === 'production') {
-
-            // navigator.serviceWorker.register('/service-worker.js');
-            const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}firebase-messaging-sw.js`)
-            messaging.useServiceWorker(registration)
-
-
-          // }
-
           // subscribe token to
           if (this.$store.state.isLogin) {
             this.$store.dispatch('UPDATE_FCM_TOKEN', currentToken)
