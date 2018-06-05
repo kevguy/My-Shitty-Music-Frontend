@@ -67,7 +67,7 @@ router.beforeEach(async (to, form, next) => {
       console.log(data)
       data = JSON.parse(data)
       console.log(data)
-      console.log(`i'm logging console.log(require('util').inspect(, { depth: null }));`)
+      console.log(`i'm logging in`)
       await store.dispatch('UPDATE_LOGIN_STATE', {
         user_id: data.userId,
         token: data.token,

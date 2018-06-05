@@ -28,7 +28,8 @@
     },
     async created() {},
     computed: {
-      sendWebsocketMsg() { return this.$store.state.Websocket.sendWebsocketMsg }
+      sendWebsocketMsg() { return this.$store.state.Websocket.sendWebsocketMsg },
+      isLoginIn() { return this.$store.state.isLoginIn }
     },
     watch: {
       sendWebsocketMsg(val) {
@@ -39,48 +40,58 @@
           this.$store.commit('updateWebsocketMsg', '')
           this.$store.commit('toggleSendWebsocketMsg', false)
         }
+      },
+      isLoginIn: async (val) => {
+        if (val) {
+          await this.handleFirebaseMessaging()
+        }
       }
     },
     async mounted () {
       this.connectToWebSocket()
-      const messaging = firebase.messaging()
-      messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
-
-      try {
-        // navigator.serviceWorker.register('/service-worker.js');
-        const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}firebase-messaging-sw.js`)
-        console.log(registration)
-        messaging.useServiceWorker(registration)
-
-        const result = await messaging.requestPermission()
-        // permission granted (don't need to check `result`)
-        // Retrieve an Instance ID token for use with FCM.
-        const currentToken = await messaging.getToken()
-        if (currentToken) {
-          // subscribe token to
-          console.log(currentToken)
-          if (this.$store.state.isLogin) {
-            this.$store.dispatch('UPDATE_FCM_TOKEN', currentToken)
-          }
-          // handle token refresh
-          messaging.onTokenRefresh(async () => {
-            try {
-              const currentToken = await messaging.getToken()
-              console.log(currentToken)
-              if (this.$store.state.isLogin) {
-                this.$store.dispatch('UPDATE_FCM_TOKEN', currentToken)
-              }
-            } catch (e) {
-              console.error('Unable to refresh token', e)
-            }
-          })
-        }
-      } catch (e) {
-        // unable to get permission to notify
-        console.log('Unable to get permission to notify.', e);
+      if (this.$store.state.isLogin) {
+        await this.handleFirebaseMessaging()
       }
     },
     methods: {
+      async handleFirebaseMessaging() {
+        const messaging = firebase.messaging()
+        messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
+
+        try {
+          // navigator.serviceWorker.register('/service-worker.js');
+          const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}firebase-messaging-sw.js`)
+          console.log(registration)
+          messaging.useServiceWorker(registration)
+
+          const result = await messaging.requestPermission()
+          // permission granted (don't need to check `result`)
+          // Retrieve an Instance ID token for use with FCM.
+          const currentToken = await messaging.getToken()
+          if (currentToken) {
+            // subscribe token to
+            console.log(currentToken)
+            if (this.$store.state.isLogin) {
+              this.$store.dispatch('UPDATE_FCM_TOKEN', currentToken)
+            }
+            // handle token refresh
+            messaging.onTokenRefresh(async () => {
+              try {
+                const currentToken = await messaging.getToken()
+                console.log(currentToken)
+                if (this.$store.state.isLogin) {
+                  this.$store.dispatch('UPDATE_FCM_TOKEN', currentToken)
+                }
+              } catch (e) {
+                console.error('Unable to refresh token', e)
+              }
+            })
+          }
+        } catch (e) {
+          // unable to get permission to notify
+          console.log('Unable to get permission to notify.', e);
+        }
+      },
       closeDrawer() {
         this.$store.commit("toggleDrawer", false)
       },
