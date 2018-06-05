@@ -55,6 +55,7 @@
     },
     methods: {
       async handleFirebaseMessaging() {
+        console.log('handleFirebaseMessaging')
         const messaging = firebase.messaging()
         messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
 
@@ -86,6 +87,11 @@
                 console.error('Unable to refresh token', e)
               }
             })
+
+            messaging.onMessage((payload) => {
+              console.log("Message received. ", payload)
+              alert(payload)
+            });
           }
         } catch (e) {
           // unable to get permission to notify
