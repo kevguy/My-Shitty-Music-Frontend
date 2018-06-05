@@ -4,11 +4,11 @@ self.__precacheManifest = [
     "url": "/js/vendors~app.c3b39e4b.js"
   },
   {
-    "revision": "b5d6ce1241754f6df6a0",
-    "url": "/js/app.b5d6ce12.js"
+    "revision": "7da319ce7420f5c675b4",
+    "url": "/js/app.7da319ce.js"
   },
   {
-    "revision": "e7f870c194e442911498f345c30278a1",
+    "revision": "b6164ffedb9073f3d798f6bcc1eed675",
     "url": "/index.html"
   },
   {
@@ -16,11 +16,15 @@ self.__precacheManifest = [
     "url": "/img/logo.968be5ba.png"
   },
   {
+    "revision": "10fbc507d2d972a6b2bd3f4f57864e2f",
+    "url": "/firebase-messaging-sw.js"
+  },
+  {
     "revision": "c3b39e4b763a72f632a8",
     "url": "/css/vendors~app.0.3636a09b.css"
   },
   {
-    "revision": "b5d6ce1241754f6df6a0",
+    "revision": "7da319ce7420f5c675b4",
     "url": "/css/app.4b59547d.css"
   }
 ];
