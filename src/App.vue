@@ -49,6 +49,7 @@
       try {
         // navigator.serviceWorker.register('/service-worker.js');
         const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}firebase-messaging-sw.js`)
+        console.log(registration)
         messaging.useServiceWorker(registration)
 
         const result = await messaging.requestPermission()
@@ -57,6 +58,7 @@
         const currentToken = await messaging.getToken()
         if (currentToken) {
           // subscribe token to
+          console.log(currentToken)
           if (this.$store.state.isLogin) {
             this.$store.dispatch('UPDATE_FCM_TOKEN', currentToken)
           }
@@ -64,6 +66,7 @@
           messaging.onTokenRefresh(async () => {
             try {
               const currentToken = await messaging.getToken()
+              console.log(currentToken)
               if (this.$store.state.isLogin) {
                 this.$store.dispatch('UPDATE_FCM_TOKEN', currentToken)
               }
