@@ -12,7 +12,7 @@ messaging.setBackgroundMessageHandler(function (payload) {
   const notificationTitle = 'Background Message Title';
   const notificationOptions = {
       body: 'Background Message body.',
-      icon: '/firebase-logo.png'
+      icon: 'https://raw.githubusercontent.com/kevguy/My-Shitty-Music-Frontend/master/public/img/icons/icon-72x72.png'
   }
 
   return self.registration.showNotification(notificationTitle,
