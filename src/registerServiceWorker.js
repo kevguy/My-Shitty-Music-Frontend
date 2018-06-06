@@ -18,7 +18,7 @@ const messaging = firebase.messaging()
 messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
 
 if (process.env.NODE_ENV === 'production') {
-  register(`${process.env.BASE_URL}service-worker.js`, {
+  register(`${process.env.BASE_URL}firebase-messaging-sw.js`, {
     ready () {
       console.log(
         'App is being served from cache by a service worker.\n' +
