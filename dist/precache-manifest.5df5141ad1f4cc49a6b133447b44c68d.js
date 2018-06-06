@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/img/logo.968be5ba.png"
   },
   {
-    "revision": "2b84632275dd1f3ce7ae425a07c2f1eb",
+    "revision": "075b09ee0b14954c38043252086cd111",
     "url": "/firebase-messaging-sw.js"
   },
   {
