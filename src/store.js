@@ -237,9 +237,9 @@ export default new Vuex.Store({
 
       if (navigator) {
         try {
-          const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}service-worker.js`)
-          console.log(registration)
-          messaging.useServiceWorker(registration)
+          // const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}service-worker.js`)
+          // console.log(registration)
+          // messaging.useServiceWorker(registration)
 
           await messaging.requestPermission()
           // permission granted (don't need to check result of messaging.requestPermission())
