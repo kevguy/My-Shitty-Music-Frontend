@@ -119,9 +119,9 @@ export default new Vuex.Store({
           })
 
           await dispatch('FETCH_USER_UPVOTES')
-          if (window && navigator) {
-            await dispatch('SETUP_FCM')
-          }
+          // if (window && navigator) {
+          //   await dispatch('SETUP_FCM')
+          // }
         } else {
           commit('logout')
         }
