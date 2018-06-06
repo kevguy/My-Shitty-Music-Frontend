@@ -237,7 +237,7 @@ export default new Vuex.Store({
 
       if (navigator) {
         try {
-          const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}firebase-messaging-sw.js`)
+          const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}service-worker.js`)
           console.log(registration)
           messaging.useServiceWorker(registration)
 

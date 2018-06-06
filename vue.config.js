@@ -14,5 +14,20 @@ module.exports = {
     config.plugin('pwa').tap(args => {
       return [pwaArgs]
     })
+  },
+  pwa: {
+    // name: 'My App',
+    // themeColor: '#4DBA87',
+    // msTileColor: '#000000',
+    // appleMobileWebAppCapable: 'yes',
+    // appleMobileWebAppStatusBarStyle: 'black',
+
+    // configure the workbox plugin
+    workboxPluginMode: 'InjectManifest',
+    workboxOptions: {
+      // swSrc is required in InjectManifest mode.
+      swSrc: 'public/firebase-messaging-sw.js'
+      // ...other Workbox options...
+    }
   }
 }
