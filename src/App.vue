@@ -18,6 +18,7 @@
   import Snackbar from '@/components/UI/Snackbar.vue'
   import firebase from '@firebase/app'
   import '@firebase/messaging'
+  // import './registerServiceWorker'
 
   export default {
     components: { Drawer, Toolbar, YouTubeMusicPlayer, Snackbar },
@@ -52,56 +53,67 @@
     async mounted () {
       this.connectToWebSocket()
 
-      // await this.handleFirebaseMessaging()
+      await this.handleFirebaseMessaging()
       // if (!this.$store.state.isFCMSetup && this.$store.state.isLogin) {
       //   await this.$store.dispatch('SETUP_FCM')
       // }
     },
     methods: {
-      // async handleFirebaseMessaging() {
-      //   console.log('handleFirebaseMessaging')
-      //   const messaging = firebase.messaging()
-      //   messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
-      //
-      //   try {
-      //     // navigator.serviceWorker.register('/service-worker.js');
-      //     const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}firebase-messaging-sw.js`)
-      //     console.log(registration)
-      //     messaging.useServiceWorker(registration)
-      //
-      //     const result = await messaging.requestPermission()
-      //     // permission granted (don't need to check `result`)
-      //     // Retrieve an Instance ID token for use with FCM.
-      //     const currentToken = await messaging.getToken()
-      //     if (currentToken) {
-      //       // subscribe token to
-      //       console.log(currentToken)
-      //       if (this.$store.state.isLogin) {
-      //         this.$store.dispatch('UPDATE_FCM_TOKEN', currentToken)
-      //       }
-      //       // handle token refresh
-      //       messaging.onTokenRefresh(async () => {
-      //         try {
-      //           const currentToken = await messaging.getToken()
-      //           console.log(currentToken)
-      //           if (this.$store.state.isLogin) {
-      //             this.$store.dispatch('UPDATE_FCM_TOKEN', currentToken)
-      //           }
-      //         } catch (e) {
-      //           console.error('Unable to refresh token', e)
-      //         }
-      //       })
-      //
-      //       messaging.onMessage((payload) => {
-      //         console.log("Message received. ", payload)
-      //         // alert(payload)
-      //       });
-      //     }
-      //   } catch (e) {
-      //     // unable to get permission to notify
-      //     console.log('Unable to get permission to notify.', e);
-      //   }
-      // },
+      async handleFirebaseMessaging() {
+        console.log('handleFirebaseMessaging')
+        const config = {
+          apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
+          authDomain: process.env.VUE_APP_AUTH_DOMAIN,
+          databaseURL: process.env.VUE_APP_DATABASE_URL,
+          projectId: process.env.VUE_APP_PROJECT_ID,
+          storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
+          messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID
+        }
+
+        firebase.initializeApp(config)
+        
+        const messaging = firebase.messaging()
+        messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
+
+        try {
+          // navigator.serviceWorker.register('/service-worker.js');
+          const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}firebase-messaging-sw.js`)
+          console.log(registration)
+          messaging.useServiceWorker(registration)
+
+          const result = await messaging.requestPermission()
+          // permission granted (don't need to check `result`)
+          // Retrieve an Instance ID token for use with FCM.
+          const currentToken = await messaging.getToken()
+          if (currentToken) {
+            // subscribe token to
+            console.log(currentToken)
+            if (this.$store.state.isLogin) {
+              this.$store.dispatch('UPDATE_FCM_TOKEN', currentToken)
+            }
+            // handle token refresh
+            messaging.onTokenRefresh(async () => {
+              try {
+                const currentToken = await messaging.getToken()
+                console.log(currentToken)
+                if (this.$store.state.isLogin) {
+                  this.$store.dispatch('UPDATE_FCM_TOKEN', currentToken)
+                }
+              } catch (e) {
+                console.error('Unable to refresh token', e)
+              }
+            })
+
+            messaging.onMessage((payload) => {
+              console.log("Message received. ", payload)
+              // alert(payload)
+            });
+          }
+        } catch (e) {
+          // unable to get permission to notify
+          console.log('Unable to get permission to notify.', e);
+        }
+      },
       closeDrawer() {
         this.$store.commit("toggleDrawer", false)
       },

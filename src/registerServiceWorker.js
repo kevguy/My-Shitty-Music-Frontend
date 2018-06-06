@@ -24,7 +24,7 @@ register(`${process.env.BASE_URL}firebase-messaging-sw.js`, {
       'For more details, visit https://goo.gl/AFskqB'
     )
   },
-  registered (registration) {
+  registered: async (registration) => {
     console.log('Service worker has been registered.')
     // const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}service-worker.js`)
     // console.log(registration)
@@ -33,8 +33,36 @@ register(`${process.env.BASE_URL}firebase-messaging-sw.js`, {
     messaging.useServiceWorker(registration)
     console.log('shithead')
     console.log(localStorage)
-    alert('fuck')
-    store.dispatch('SETUP_FCM', messaging)
+    // alert('fuck')
+    // store.dispatch('SETUP_FCM', messaging)
+    await messaging.requestPermission()
+    // permission granted (don't need to check result of messaging.requestPermission())
+    // Retrieve an Instance ID token for use with FCM.
+    const currentToken = await messaging.getToken()
+    if (currentToken) {
+      // subscribe token to
+      console.log(currentToken)
+      if (store.state.isLogin) {
+        store.dispatch('UPDATE_FCM_TOKEN', currentToken)
+      }
+      // handle token refresh
+      messaging.onTokenRefresh(async () => {
+        try {
+          const currentToken = await messaging.getToken()
+          console.log(currentToken)
+          if (store.state.isLogin) {
+            store.dispatch('UPDATE_FCM_TOKEN', currentToken)
+          }
+        } catch (e) {
+          console.error('Unable to refresh token', e)
+        }
+      })
+
+      messaging.onMessage((payload) => {
+        console.log(`Message received. ${payload}`)
+        // alert(payload)
+      })
+    }
   },
   cached () {
     console.log('Content has been cached for offline use.')
