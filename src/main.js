@@ -6,8 +6,6 @@ import './registerServiceWorker'
 
 Vue.config.productionTip = false
 
-store.dispatch('SETUP_FCM')
-
 new Vue({
   router,
   store,

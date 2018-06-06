@@ -49,8 +49,6 @@ const router = new Router({
 router.beforeEach(async (to, form, next) => {
   // https://medium.com/@anas.mammeri/vue-2-firebase-how-to-build-a-vue-app-with-firebase-authentication-system-in-15-minutes-fdce6f289c3c
   console.log('beforeEach')
-  console.log(to)
-
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
   // if accessing home page/ song page, fetch songs
@@ -63,11 +61,7 @@ router.beforeEach(async (to, form, next) => {
     console.log(`checking if user's logged in`)
     let data = localStorage.getItem('userInfo')
     if (data) {
-      console.log('shit')
-      console.log(data)
       data = JSON.parse(data)
-      console.log(data)
-      console.log(`i'm logging in`)
       await store.dispatch('UPDATE_LOGIN_STATE', {
         user_id: data.userId,
         token: data.token,

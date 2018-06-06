@@ -3,6 +3,7 @@
 import { register } from 'register-service-worker'
 import firebase from '@firebase/app'
 import '@firebase/messaging'
+import store from './store'
 
 const config = {
   apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
@@ -30,6 +31,10 @@ register(`${process.env.BASE_URL}firebase-messaging-sw.js`, {
     const messaging = firebase.messaging()
     messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
     messaging.useServiceWorker(registration)
+    console.log('shithead')
+    console.log(localStorage)
+    alert('fuck')
+    store.dispatch('SETUP_FCM', messaging)
   },
   cached () {
     console.log('Content has been cached for offline use.')
