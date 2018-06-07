@@ -241,16 +241,19 @@ export default new Vuex.Store({
     async SETUP_FCM ({ commit, state, dispatch }) {
       console.log('SETUP_FCM')
       const messaging = firebase.messaging()
+      console.log('use public vapid key')
       messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
 
       // console.log(state.serviceWorkerRegistration)
       try {
+        console.log('trying to register')
         const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}firebase-messaging-sws.js`)
-        // console.log(registration)
+        console.log(registration)
         messaging.useServiceWorker(registration)
         // messaging.useServiceWorker(state.serviceWorkerRegistration)
-
+        console.log('start await request permission')
         await messaging.requestPermission()
+        console.log('after await request permission')
         // permission granted (don't need to check result of messaging.requestPermission())
         // Retrieve an Instance ID token for use with FCM.
         const currentToken = await messaging.getToken()
