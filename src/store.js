@@ -245,11 +245,11 @@ export default new Vuex.Store({
       console.log('SETUP_FCM')
       const messaging = firebase.messaging()
       console.log('use public vapid key')
-      messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
 
       // console.log(state.serviceWorkerRegistration)
       if (!state.isServiceWorkerRegistered) {
         try {
+          messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
           console.log('trying to register')
           const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}firebase-messaging-sws.js`)
           console.log(registration)
