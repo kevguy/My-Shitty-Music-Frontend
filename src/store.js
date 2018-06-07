@@ -23,8 +23,8 @@ export default new Vuex.Store({
     userDisplayName: '',
     userId: '',
     token: '',
-    songs: []
-    // serviceWorkerRegistration: undefined
+    songs: [],
+    isServiceWorkerRegistered: false
   },
   mutations: {
     updateSongs (state, payload) { state.songs = payload },
@@ -91,6 +91,9 @@ export default new Vuex.Store({
     },
     updateFCMStatus (state, payload) {
       state.isFCMSetup = payload
+    },
+    updateServiceWorkerStatus (state, payload) {
+      state.isServiceWorkerRegistered = payload
     }
   },
   actions: {
@@ -245,56 +248,59 @@ export default new Vuex.Store({
       messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
 
       // console.log(state.serviceWorkerRegistration)
-      try {
-        console.log('trying to register')
-        const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}firebase-messaging-sws.js`)
-        console.log(registration)
-        messaging.useServiceWorker(registration)
-        // messaging.useServiceWorker(state.serviceWorkerRegistration)
-        console.log('start await request permission')
-        await messaging.requestPermission()
-        console.log('after await request permission')
-        // permission granted (don't need to check result of messaging.requestPermission())
-        // Retrieve an Instance ID token for use with FCM.
-        console.log('start awaiting token')
-        const currentToken = await messaging.getToken()
-        console.log('after awaiting token')
-        if (currentToken) {
-          // subscribe token to
-          if (localStorage) {
-            localStorage.setItem('FCM_TOKEN', currentToken)
-          }
-          console.log(currentToken)
-          if (localStorage) {
-            localStorage.setItem('FCM_TOKEN', currentToken)
-          }
-          // if (state.isLogin) {
-          //   dispatch('UPDATE_FCM_TOKEN', currentToken)
-          // }
-          // handle token refresh
-          messaging.onTokenRefresh(async () => {
-            try {
-              const currentToken = await messaging.getToken()
-              console.log(currentToken)
-              // if (state.isLogin) {
-              //   dispatch('UPDATE_FCM_TOKEN', currentToken)
-              // }
-              if (localStorage) {
-                localStorage.setItem('FCM_TOKEN', currentToken)
-              }
-            } catch (e) {
-              console.error('Unable to refresh token', e)
+      if (!state.isServiceWorkerRegistered) {
+        try {
+          console.log('trying to register')
+          const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}firebase-messaging-sws.js`)
+          console.log(registration)
+          messaging.useServiceWorker(registration)
+          commit('updateServiceWorkerStatus', true)
+          // messaging.useServiceWorker(state.serviceWorkerRegistration)
+          console.log('start await request permission')
+          await messaging.requestPermission()
+          console.log('after await request permission')
+          // permission granted (don't need to check result of messaging.requestPermission())
+          // Retrieve an Instance ID token for use with FCM.
+          console.log('start awaiting token')
+          const currentToken = await messaging.getToken()
+          console.log('after awaiting token')
+          if (currentToken) {
+            // subscribe token to
+            if (localStorage) {
+              localStorage.setItem('FCM_TOKEN', currentToken)
             }
-          })
+            console.log(currentToken)
+            if (localStorage) {
+              localStorage.setItem('FCM_TOKEN', currentToken)
+            }
+            // if (state.isLogin) {
+            //   dispatch('UPDATE_FCM_TOKEN', currentToken)
+            // }
+            // handle token refresh
+            messaging.onTokenRefresh(async () => {
+              try {
+                const currentToken = await messaging.getToken()
+                console.log(currentToken)
+                // if (state.isLogin) {
+                //   dispatch('UPDATE_FCM_TOKEN', currentToken)
+                // }
+                if (localStorage) {
+                  localStorage.setItem('FCM_TOKEN', currentToken)
+                }
+              } catch (e) {
+                console.error('Unable to refresh token', e)
+              }
+            })
 
-          messaging.onMessage((payload) => {
-            console.log(`Message received. ${payload}`)
-            // alert(payload)
-          })
+            messaging.onMessage((payload) => {
+              console.log(`Message received. ${payload}`)
+              // alert(payload)
+            })
+          }
+        } catch (e) {
+          // unable to get permission to notify
+          console.error('Unable to get permission to notify.', e)
         }
-      } catch (e) {
-        // unable to get permission to notify
-        console.error('Unable to get permission to notify.', e)
       }
     }
   }
