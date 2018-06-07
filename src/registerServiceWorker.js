@@ -27,6 +27,7 @@ register(`${process.env.BASE_URL}firebase-messaging-sws.js`, {
   registered: async (registration) => {
     console.log('Service worker has been registered.')
     await store.dispatch('SETUP_FCM', registration)
+    localStorage.setItem('fuckfuck', 'fuckfuck')
 
     // const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}service-worker.js`)
     // console.log(registration)
