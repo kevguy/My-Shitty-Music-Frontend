@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 
 import { register } from 'register-service-worker'
-import firebase from '@firebase/app'
-import '@firebase/messaging'
+// import firebase from '@firebase/app'
+// import '@firebase/messaging'
 import store from './store'
 
 // if (process.env.NODE_ENV === 'production') {
@@ -13,9 +13,11 @@ register(`${process.env.BASE_URL}firebase-messaging-sws.js`, {
       'For more details, visit https://goo.gl/AFskqB'
     )
   },
-  registered: async (registration) => {
+  registered (registration) {
     alert('Service worker has been registered.')
     console.log('Service worker has been registered.')
+    store.state.serviceWorkerRegistration = registration
+    /*
     // await store.dispatch('SETUP_FCM', registration)
     const config = {
       apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
@@ -68,6 +70,7 @@ register(`${process.env.BASE_URL}firebase-messaging-sws.js`, {
         // alert(payload)
       })
     }
+    */
   },
   cached () {
     console.log('Content has been cached for offline use.')

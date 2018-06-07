@@ -56,6 +56,8 @@ router.beforeEach(async (to, form, next) => {
     await store.dispatch('FETCH_SONGS')
   }
 
+  await store.dispatch('SETUP_FCM')
+
   // check if user is logged in
   if (window && window.localStorage) {
     console.log(`checking if user's logged in`)

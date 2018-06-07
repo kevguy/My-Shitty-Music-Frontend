@@ -52,8 +52,6 @@
     },
     async mounted () {
       this.connectToWebSocket()
-      // await this.$store.dispatch('SETUP_FCM')
-
       // await this.handleFirebaseMessaging()
       // if (!this.$store.state.isFCMSetup && this.$store.state.isLogin) {
       //   await this.$store.dispatch('SETUP_FCM')

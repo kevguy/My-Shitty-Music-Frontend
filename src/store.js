@@ -24,6 +24,7 @@ export default new Vuex.Store({
     userId: '',
     token: '',
     songs: []
+    // serviceWorkerRegistration: undefined
   },
   mutations: {
     updateSongs (state, payload) { state.songs = payload },
@@ -120,6 +121,13 @@ export default new Vuex.Store({
           // if (window && navigator) {
           //   await dispatch('SETUP_FCM')
           // }
+          if (localStorage) {
+            const token = localStorage.getItem('FCM_TOKEN')
+            if (token) {
+              console.log(token)
+              await dispatch('UPDATE_FCM_TOKEN', token)
+            }
+          }
         } else {
           commit('logout')
         }
@@ -233,11 +241,14 @@ export default new Vuex.Store({
     async SETUP_FCM ({ commit, state, dispatch }) {
       console.log('SETUP_FCM')
       const messaging = firebase.messaging()
+      messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
 
+      // console.log(state.serviceWorkerRegistration)
       try {
-        // const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}service-worker.js`)
+        const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}firebase-messaging-sws.js`)
         // console.log(registration)
-        // messaging.useServiceWorker(registration)
+        messaging.useServiceWorker(registration)
+        // messaging.useServiceWorker(state.serviceWorkerRegistration)
 
         await messaging.requestPermission()
         // permission granted (don't need to check result of messaging.requestPermission())
@@ -249,6 +260,9 @@ export default new Vuex.Store({
             localStorage.setItem('FCM_TOKEN', currentToken)
           }
           console.log(currentToken)
+          if (localStorage) {
+            localStorage.setItem('FCM_TOKEN', currentToken)
+          }
           // if (state.isLogin) {
           //   dispatch('UPDATE_FCM_TOKEN', currentToken)
           // }
