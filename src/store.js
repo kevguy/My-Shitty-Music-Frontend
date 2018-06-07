@@ -205,13 +205,13 @@ export default new Vuex.Store({
         console.error('FETCH_USER_UPVOTES failed', e)
       }
     },
-    async UPDATE_FCM_TOKEN ({ commit, state }) {
+    async UPDATE_FCM_TOKEN ({ commit, state }, token) {
       try {
         console.log(`before doing UPDATE_FCM_TOKEN`)
-        let token
-        if (localStorage) {
-          token = localStorage.getItem('FCM_TOKEN')
-        }
+        // let token
+        // if (localStorage) {
+        //   token = localStorage.getItem('FCM_TOKEN')
+        // }
         console.info(`login status is ${state.isLogin}`)
         await fetch(`${state.baseUrl}/update-fcm-token`, {
           method: 'POST',
@@ -230,15 +230,14 @@ export default new Vuex.Store({
         console.error('Failed to UPDATE_FCM_TOKEN', e)
       }
     },
-    async SETUP_FCM ({ commit, state, dispatch }, registration) {
+    async SETUP_FCM ({ commit, state, dispatch }) {
       console.log('SETUP_FCM')
       const messaging = firebase.messaging()
-      messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
 
       try {
         // const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}service-worker.js`)
         // console.log(registration)
-        messaging.useServiceWorker(registration)
+        // messaging.useServiceWorker(registration)
 
         await messaging.requestPermission()
         // permission granted (don't need to check result of messaging.requestPermission())
