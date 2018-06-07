@@ -2,10 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-// import './registerServiceWorker'
+import './registerServiceWorker'
 
 Vue.config.productionTip = false
 
+console.log('suck it')
 new Vue({
   router,
   store,

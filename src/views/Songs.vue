@@ -11,6 +11,7 @@
       v-bind:upvotes="song.upvotes"
       v-bind:plays="song.plays"
       v-bind:isHeart="song.isHeart"
+      v-bind:key="song.id"
     />
   </div>
 </template>

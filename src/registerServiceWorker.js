@@ -17,7 +17,7 @@ const config = {
 firebase.initializeApp(config)
 
 // if (process.env.NODE_ENV === 'production') {
-register(`${process.env.BASE_URL}firebase-messaging-sw.js`, {
+register(`${process.env.BASE_URL}firebase-messaging-sws.js`, {
   ready () {
     console.log(
       'App is being served from cache by a service worker.\n' +
@@ -26,8 +26,11 @@ register(`${process.env.BASE_URL}firebase-messaging-sw.js`, {
   },
   registered: async (registration) => {
     console.log('Service worker has been registered.')
+    await store.dispatch('SETUP_FCM', registration)
+
     // const registration = await navigator.serviceWorker.register(`${process.env.BASE_URL}service-worker.js`)
     // console.log(registration)
+    /*
     const messaging = firebase.messaging()
     messaging.usePublicVapidKey('BJvhLia-szgnA5EUiD71RT_ffEwG1d3E9mcK2poaMSWlzZAkhM-WAmfqBLlwDmf4WGO1MX7PWno7PCHGERj8Grc')
     messaging.useServiceWorker(registration)
@@ -63,6 +66,7 @@ register(`${process.env.BASE_URL}firebase-messaging-sw.js`, {
         // alert(payload)
       })
     }
+    */
   },
   cached () {
     console.log('Content has been cached for offline use.')
