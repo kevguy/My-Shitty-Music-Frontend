@@ -256,7 +256,9 @@ export default new Vuex.Store({
         console.log('after await request permission')
         // permission granted (don't need to check result of messaging.requestPermission())
         // Retrieve an Instance ID token for use with FCM.
+        console.log('start awaiting token')
         const currentToken = await messaging.getToken()
+        console.log('after awaiting token')
         if (currentToken) {
           // subscribe token to
           if (localStorage) {
